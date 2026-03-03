@@ -1,0 +1,26 @@
+import type { Metadata } from 'next';
+import { DM_Sans } from 'next/font/google';
+import './globals.css';
+
+const dmSans = DM_Sans({
+  subsets: ['latin'],
+  variable: '--font-dm-sans',
+  weight: ['300', '400', '500', '600', '700'],
+  display: 'swap',
+});
+
+export const metadata: Metadata = {
+  title: 'Musical MBTI — Discover Your Cognitive Sound Profile',
+  description:
+    'A psychometric quiz that maps how you process music across four distinct cognitive axes. Find your four-letter Musical Type.',
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en" className={dmSans.variable}>
+      <body className={`${dmSans.className} bg-[#FDFBF7] text-[#1A2133] antialiased`}>
+        {children}
+      </body>
+    </html>
+  );
+}
