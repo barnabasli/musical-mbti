@@ -69,7 +69,7 @@ export const questions: Question[] = [
   {
     id: 2,
     scenario: 'September Rain',
-    audioSrc: '/audio/september rain.mp3',
+    audioSrc: '/audio/September-Rain.mp3',
     audioLabel: '♫ Makoto Matsushita - September Rain',
     coverSrc: '/covers/september rain.jpg',
     questionText:
@@ -110,7 +110,7 @@ export const questions: Question[] = [
   {
     id: 3,
     scenario: 'Pan Neo',
-    audioSrc: '/audio/pan neo clip.mp3',
+    audioSrc: '/audio/pan-neo.mp3',
     audioLabel: '♫ Keep - Pan Neo',
     coverSrc: '/covers/pan neo.jpg',
     questionText:
@@ -291,9 +291,9 @@ export const questions: Question[] = [
   {
     id: 6,
     scenario: 'The Concerto Opening',
-    audioSrc: '/audio/richter rach 2.mp3',
+    audioSrc: '/audio/richter-rach-2.mp3',
     audioLabel: 'Richter — Rachmaninoff Piano Concerto No. 2',
-    audioSrc2: '/audio/zimerman rach 2.mp3',
+    audioSrc2: '/audio/zimerman-rach-2.mp3',
     audioLabel2: 'Zimerman — Rachmaninoff Piano Concerto No. 2',
     questionText:
       'Listen to these two pianists play the opening to a concerto. Which approach do you prefer musically?',
@@ -418,7 +418,7 @@ export const questions: Question[] = [
     id: 11,
     format: 'likert' as const,
     scenario: 'Looking Glass',
-    audioSrc: '/audio/Looking Glass.mp3',
+    audioSrc: '/audio/Looking-Glass.mp3',
     audioLabel: '♫ Allan Holdsworth — Looking Glass',
     coverSrc: '/covers/looking glass.jpg',
     questionText: 'Listen to this song and answer the questions',
