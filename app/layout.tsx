@@ -10,9 +10,9 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: 'Musical MBTI — Discover Your Cognitive Sound Profile',
+  title: 'Musical MBTI — Discover Your Sound Profile',
   description:
-    'A psychometric quiz that maps how you process music across four distinct cognitive axes. Find your four-letter Musical Type.',
+    'A quiz that maps how you process music across four distinct axes.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

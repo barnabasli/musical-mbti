@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
 
 import { LandingView }  from '@/components/LandingView';
@@ -11,11 +11,59 @@ import { questions }                                     from '@/lib/questions';
 import { initialScores, applyScores, computePerQuestionBounds, calculateBoundsFromHistory } from '@/lib/scoring';
 import { AppView, ScoreAdjustment, Scores }                                                  from '@/lib/types';
 
+// ── Cinematic media preloaders ─────────────────────────────────────────────────
+
+const ESSENTIAL_VIDEOS = [
+  '/backgrounds/september%20rain.mp4',
+];
+
+const DEFERRED_VIDEOS = [
+  '/backgrounds/beethoven.mp4',
+  '/backgrounds/ashes.mp4',
+  '/backgrounds/holdsworth.mp4',
+  '/backgrounds/kendrick.mp4',
+  '/backgrounds/zimerman.mp4',
+];
+
+const DEFERRED_IMAGES = ['/backgrounds/pan%20neo.jpg'];
+
+function MediaPreloader({ videos = [], images = [] }: { videos?: string[], images?: string[] }) {
+  if (videos.length === 0 && images.length === 0) return null;
+
+  return (
+    <div
+      aria-hidden="true"
+      style={{ position: 'fixed', top: '-9999px', left: '-9999px', width: '1px', height: '1px', pointerEvents: 'none' }}
+    >
+      {videos.map((src) => (
+        // eslint-disable-next-line jsx-a11y/media-has-caption
+        <video key={src} src={src} preload="auto" muted playsInline />
+      ))}
+      {images.map((src) => (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img key={src} src={src} alt="" />
+      ))}
+    </div>
+  );
+}
+
 export default function Home() {
   const [view, setView]                 = useState<AppView>('landing');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [scores, setScores]             = useState<Scores>(initialScores);
   const [answerHistory, setAnswerHistory] = useState<ScoreAdjustment[][]>([]);
+  const [shouldPreloadDeferred, setShouldPreloadDeferred] = useState(false);
+
+  // Wait for the window to fully load before triggering the heavy media downloads
+  useEffect(() => {
+    if (document.readyState === 'complete') {
+      setShouldPreloadDeferred(true);
+    } else {
+      const handleLoad = () => setShouldPreloadDeferred(true);
+      window.addEventListener('load', handleLoad);
+      return () => window.removeEventListener('load', handleLoad);
+    }
+  }, []);
 
   // Pre-compute per-question bounds once; aggregate dynamically from answer history
   const perQuestionBounds = useMemo(() => computePerQuestionBounds(questions), []);
@@ -33,11 +81,6 @@ export default function Home() {
     setView('quiz');
   }, []);
 
-  /**
-   * Called when the user selects an answer.
-   * Applies all score adjustments for that answer, then either advances
-   * to the next question or transitions to the results view.
-   */
   const handleAnswer = useCallback(
     (adjustments: ScoreAdjustment[]) => {
       const newScores = applyScores(scores, adjustments);
@@ -63,10 +106,12 @@ export default function Home() {
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-white">
-      {/*
-        AnimatePresence with mode="wait" ensures the exiting view fully
-        unmounts before the entering view mounts, enabling clean page transitions.
-      */}
+      {/* Essential preloader: Mounts instantly on render so the first question is guaranteed ready */}
+      <MediaPreloader videos={ESSENTIAL_VIDEOS} />
+      
+      {/* Deferred preloader: Mounts only after the initial page resources are fully loaded */}
+      {shouldPreloadDeferred && <MediaPreloader videos={DEFERRED_VIDEOS} images={DEFERRED_IMAGES} />}
+      
       <AnimatePresence mode="wait">
         {view === 'landing' && (
           <LandingView key="landing" onStart={handleStart} />
@@ -86,7 +131,7 @@ export default function Home() {
           <ResultsView 
             key="results" 
             scores={scores} 
-            bounds={bounds} // <-- Passed the dynamic bounds here!
+            bounds={bounds} 
             onRetake={handleRetake} 
           />
         )}

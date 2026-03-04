@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
 import { motion } from 'framer-motion';
 
 interface LandingViewProps {
@@ -18,9 +17,10 @@ interface CollageImageProps {
   delay: number;
   baseZ: number;
   style: React.CSSProperties;
+  priority?: boolean;
 }
 
-function CollageImage({ src, sizes, slideFrom, rotation, delay, baseZ, style }: CollageImageProps) {
+function CollageImage({ src, sizes, slideFrom, rotation, delay, baseZ, style, priority = false }: CollageImageProps) {
   return (
     <motion.div
       initial={{ opacity: 0, x: slideFrom.x, y: slideFrom.y, rotate: rotation }}
@@ -42,7 +42,14 @@ function CollageImage({ src, sizes, slideFrom, rotation, delay, baseZ, style }: 
         }}
       >
         <div className="relative h-full w-full overflow-hidden" style={{ borderRadius: '1px' }}>
-          <Image src={src} alt="" fill className="object-cover" sizes={sizes} />
+          <Image 
+            src={src} 
+            alt="" 
+            fill 
+            className="object-cover" 
+            sizes={sizes} 
+            priority={priority} 
+          />
         </div>
       </div>
     </motion.div>
@@ -115,6 +122,7 @@ export function LandingView({ onStart }: LandingViewProps) {
             delay={0.35}
             baseZ={1}
             style={{ top: '8%', left: '14%', width: '54%' }}
+            priority={true}
           />
 
           <CollageImage
@@ -125,6 +133,7 @@ export function LandingView({ onStart }: LandingViewProps) {
             delay={0.5}
             baseZ={2}
             style={{ top: '34%', left: '36%', width: '46%' }}
+            priority={true}
           />
 
           <CollageImage
@@ -135,6 +144,7 @@ export function LandingView({ onStart }: LandingViewProps) {
             delay={0.65}
             baseZ={3}
             style={{ top: '55%', left: '6%', width: '44%' }}
+            priority={true}
           />
 
         </div>
