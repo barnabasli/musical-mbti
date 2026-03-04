@@ -39,7 +39,7 @@ export function BlogView({ onBack }: BlogViewProps) {
         {/* Disclaimer + Intro */}
         <section className="mb-14">
           <p className="text-base leading-[1.85] text-[#4E5F77]">
-            First and foremost, this is not a scientifically or psychologically grounded assessment. While I&apos;ve tried my best to make this framework as fair and unbiased as possible, please remember that the questions and ideologies behind this test were designed by a 22-year-old without a degree in music or psychology. Although I&apos;ve tested this with a few friends, there are no rigorous studies backing my methodology. Basically, what I&apos;m trying to say is, don&apos;t take this too seriously.
+            First, I want to add a quick disclaimer: this is not a scientifically or psychologically grounded assessment. While I&apos;ve tried my best to make this framework as fair and unbiased as possible, please remember that the questions and ideologies behind this test were designed by a 22-year-old without a degree in music or psychology. Although I&apos;ve tested this with a few friends, there are no rigorous studies backing my methodology. Basically, what I&apos;m trying to say is, don&apos;t take this too seriously.
             <br /><br />
             That being said, music and psychology are both topics I care about, and therefore I&apos;ve put a level of effort into making this test that I typically wouldn&apos;t do for other side projects. If you&apos;re curious about the philosophy, mechanics, and considerations behind the test, read on.
           </p>

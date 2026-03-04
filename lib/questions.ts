@@ -210,7 +210,7 @@ export const questions: Question[] = [
       },
       {
         label: 'B',
-        text: 'Yes, I prefer music that evolves, build tension, and takes me somewhere',
+        text: 'Yes, I prefer music that evolves, builds tension, and takes me somewhere',
         scores: [
           { axis: 'momentum',   points: -2 }, // strong Progression
         ],
@@ -246,7 +246,7 @@ export const questions: Question[] = [
       },
       {
         label: 'B',
-        text: 'Listening to the mix, the tone of a specific instrument, or a rhythm that caught your attention',
+        text: 'Listening to the melody, a specific instrument or vocalist, or a rhythm that caught your attention',
         scores: [{ axis: 'scope', points: -2 }], // strong Detailed
       },
     ],
@@ -319,7 +319,7 @@ export const questions: Question[] = [
   // Tests: Immersion vs Progression
   {
     id: 13,
-    scenario: 'Feel when listening to song',
+    scenario: 'Feel when listening to a song',
     questionText: 'Pick your favorite genre of music. How do you feel when you listen to songs in that genre?',
     answers: [
       {
@@ -338,7 +338,7 @@ export const questions: Question[] = [
         ],
       },
       {
-        label: 'D',
+        label: 'C',
         text: 'I\'m actively paying attention to the details of each song',
         scores: [
           { axis: 'scope',   points: -2 }, // strong Detailed
