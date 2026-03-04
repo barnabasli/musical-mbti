@@ -11,10 +11,15 @@ import { questions }                                     from '@/lib/questions';
 import { initialScores, applyScores, computePerQuestionBounds, calculateBoundsFromHistory } from '@/lib/scoring';
 import { AppView, ScoreAdjustment, Scores }                                                  from '@/lib/types';
 
-// ── Cinematic media preloaders ─────────────────────────────────────────────────
+// ── Cinematic media & Cover preloaders ─────────────────────────────────────────
 
 const ESSENTIAL_VIDEOS = [
   '/backgrounds/september%20rain.mp4',
+];
+
+const ESSENTIAL_IMAGES = [
+  // Add your September Rain album cover here
+  '/covers/september rain.jpg', 
 ];
 
 const DEFERRED_VIDEOS = [
@@ -25,7 +30,13 @@ const DEFERRED_VIDEOS = [
   '/backgrounds/zimerman.mp4',
 ];
 
-const DEFERRED_IMAGES = ['/backgrounds/pan%20neo.jpg'];
+const DEFERRED_IMAGES = [
+  '/backgrounds/pan%20neo.jpg',
+  // Add the rest of your album covers here
+  '/covers/ashes.jpg',
+  '/covers/tokyo%20dream.jpg',
+  '/covers/rach2.jpg',
+];
 
 function MediaPreloader({ videos = [], images = [] }: { videos?: string[], images?: string[] }) {
   if (videos.length === 0 && images.length === 0) return null;
@@ -107,7 +118,7 @@ export default function Home() {
   return (
     <main className="relative min-h-screen overflow-hidden bg-white">
       {/* Essential preloader: Mounts instantly on render so the first question is guaranteed ready */}
-      <MediaPreloader videos={ESSENTIAL_VIDEOS} />
+      <MediaPreloader videos={ESSENTIAL_VIDEOS} images={ESSENTIAL_IMAGES} />
       
       {/* Deferred preloader: Mounts only after the initial page resources are fully loaded */}
       {shouldPreloadDeferred && <MediaPreloader videos={DEFERRED_VIDEOS} images={DEFERRED_IMAGES} />}
