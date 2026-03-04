@@ -78,16 +78,16 @@ export function BlogView({ onBack }: BlogViewProps) {
             </div>
 
             <div>
-              <h3 className="mb-3 text-base font-bold text-[#1A2133]">The Exposure Gap</h3>
+              <h3 className="mb-3 text-base font-bold text-[#1A2133]">People With and Without Music Experience</h3>
               <p className="text-base leading-[1.85] text-[#4E5F77]">
-                Bridging the gap between people with and without formal music training is extremely difficult and makes it hard to test certain things, especially the axis of Holistic v Detailed. A listener&apos;s ability to process complex music is heavily linked to their previous musical exposure, as well as certain biological and psychological traits. To account for this, I&apos;ve decided primarily to test this axis through written questions rather than questions involving listening. It&apos;s not fair to expect the same level of attention to detail from an average person compared to someone with a PHD in sound composition.
+                Bridging the gap between people with and without formal music training is extremely difficult and makes it hard to test certain things, especially the axis of Holistic v Detailed. A listener&apos;s ability to process complex music is heavily linked to their previous musical exposure, as well as certain biological and psychological traits. To account for this, I&apos;ve decided primarily to test this axis through written questions rather than questions involving listening. It&apos;s not fair to expect the same level of attention to detail from an average person compared to someone with a PhD in sound composition.
               </p>
             </div>
 
             <div>
               <h3 className="mb-3 text-base font-bold text-[#1A2133]">A Note on Lyrics & Aesthetics</h3>
               <p className="text-base leading-[1.85] text-[#4E5F77]">
-                Many people listen to music purely for the lyrics, the aesthetic, or the artist&apos;s persona. If you fall entirely into this group, your results here will likely be inaccurate and you probably didn&apos;t know how to respond to a lot of the questions. This test is specifically designed to measure the function of music and how the actual sound interacts with your brain. Lyrics introduce an entirely new dimension that I didn&apos;t feel like I could capture easily, and therefore the test doesn't account for it very well.
+                Many people listen to music purely for the lyrics, the aesthetic, or the artist&apos;s persona. If you fall entirely into this group, your results here will likely be inaccurate and you probably thought a lot of the questions were irrelevant or hard to answer. This test is specifically designed to measure the function of music and how the actual sound interacts with your brain. Lyrics introduce an entirely new dimension that I didn&apos;t feel like I could capture easily, and therefore the test doesn't account for it very well.
               </p>
             </div>
 
@@ -117,7 +117,7 @@ export function BlogView({ onBack }: BlogViewProps) {
                 I would argue this is the most polarizing distinction in how people approach music. This spectrum measures whether you are drawn in by the pure emotion and atmosphere a track gives off, or if you enjoy it because of the underlying framework and musical craft.
               </p>
               <p className="mb-5 text-base leading-[1.85] text-[#4E5F77]">
-                I want to clarify a common misconception here: your placement on this spectrum is NOT an indicator of your natural ability, &ldquo;music IQ,&rdquo; or intelligence. I have a friend who has proven himself to be a very talented musician through competitions, who also happens to have perfect pitch. It&apos;s pretty clear that he has a high &ldquo;music IQ&rdquo;, yet many of his playlists consist entirely of low-effort rap and trap. I&apos;ve asked him about this, and he said he listens purely for the vibes.
+                I want to clarify a common misconception here: your placement on this spectrum is NOT an indicator of your natural ability, &ldquo;music IQ,&rdquo; or intelligence. I have a friend who has proven himself to be a very talented musician through competitions, who also happens to have perfect pitch. It&apos;s pretty clear that he has a high &ldquo;music IQ&rdquo;, yet many of his playlists consist entirely of uncomplicated rap music. I&apos;ve asked him about his music taste, and he said he listens purely for the vibes.
               </p>
               <p className="text-base leading-[1.85] text-[#4E5F77]">
                 Similarly, music taste does not dictate general intelligence. For example, look at{' '}
@@ -148,10 +148,10 @@ export function BlogView({ onBack }: BlogViewProps) {
                 I debated including this axis because it feels more like a standard personality trait than a musical one. However, your personality directly dictates how you appreciate art, and I&apos;ve found that this distinction matters a lot and is reflected quite significantly in someone&apos;s music taste. Why is it that you can guess what songs your friends listen to just by observing how they behave?
               </p>
               <p className="mb-5 text-base leading-[1.85] text-[#4E5F77]">
-                Testing this was harder than I anticipated. I originally planned to rely solely on jazz songs to test this, since the genre relies on unconventional chords and rhythms that still follow musici theory. I still think this is a good way to test the axis, as I don&apos;t want all questions to be theoretical; it's important to actually listen to something and gauge your reaction. However, I realized that listeners without prior exposure to jazz wouldn&apos;t always hear surprise; their brains would just categorize it as dissonant noise due to it being an incredibly unfamiliar pattern, forcing them to lean heavily towards comfort by default. To account for this, I also included questions that test your tolerance for friction and novelty in more psychologically grounded ways. 
+                Testing this was harder than I anticipated. I originally planned to rely solely on jazz songs to test this, since the genre relies on unconventional chords and rhythms that still follow music theory. I still think this is a good way to test the axis, as I don&apos;t want all questions to be theoretical; it's important to actually listen to something and gauge your reaction. However, I realized that listeners without prior exposure to jazz wouldn&apos;t always hear surprise; their brains would just categorize it as dissonant noise due to it being an incredibly unfamiliar pattern, forcing them to lean heavily towards comfort by default. To account for this, I also included questions that test your tolerance for friction and novelty in more psychologically grounded ways. 
               </p>
               <p className="text-base leading-[1.85] text-[#4E5F77]">
-                Before including these questions, I also thought about whether someone&apos;s openness to new experiences can actually directly correlate to their openness towards new music, and I&apos;ve been unable to answer it for myself because I believe music has some inherent properties that easily conflict with this. However, there have been papers published proving there is at least a correlation, so therefore I won&apos;t think too hard about it and just accept what&apos;s been done by people with more education than me. If you&apos;re curious about this study, you can read about it{' '}
+                Before including these questions, I also thought about whether someone&apos;s openness to new experiences can actually directly indicate their openness towards surprising music, and I&apos;ve been unable to answer it for myself because I believe music has some inherent properties that easily conflict with this. However, there have been papers published proving there is at least a correlation, so therefore I won&apos;t think too hard about it and just accept what&apos;s been done by people with more education than me. If you&apos;re curious about this topic, you can read more about it{' '}
                 <a
                   href="https://gosling.psy.utexas.edu/wp-content/uploads/2014/09/JPSP03musicdimensions.pdf"
                   target="_blank"
@@ -191,7 +191,7 @@ export function BlogView({ onBack }: BlogViewProps) {
                 <div>
                   <span className="text-sm font-bold text-[#1A2133]">Richter: </span>
                   <span className="text-sm leading-relaxed text-[#4E5F77]">
-                    Maintains strict rhythmic discipline, sacrificing micro-expression for the sake of amplifying the massive structural impact of later passages.
+                    Maintains a stricter rhythmic discipline, sacrificing some micro expression for the sake of amplifying the impact of later, more important passages.
                   </span>
                 </div>
               </div>
@@ -215,7 +215,7 @@ export function BlogView({ onBack }: BlogViewProps) {
                 This tests whether you lean toward music that envelops and sustains a specific mood or music that builds, evolves, and takes you on a journey. For example, some people can sit with an unchanging minimalist track or repetitive ASMR for hours, while others need the song to go somewhere to be satisfied.
               </p>
               <p className="text-base leading-[1.85] text-[#4E5F77]">
-                I was pretty conflicted about whether to include this axis because of its inherent overlap with the others. Progression overlaps with Holistic, as if you need music to progress, you may also care about its overall structure. Immersion also overlaps with Comfort, as if you are immersed, you are likely comfortable. However, every axis overlaps in some way, and this holds true for almost all methods of classification in psychology, including the MBTI test this was based on. Again, I&apos;ve decided not to think to deeply about it as this is ultimately something I&apos;ve made for fun; it&apos;s not meant to be a definitive scientific measure.
+                I was pretty conflicted about whether to include this axis because of its inherent overlap with the others. Progression overlaps with Holistic, as if you need music to progress, you may also care about its overall structure. Immersion also overlaps with Comfort, as if you are immersed, you are likely comfortable. However, every axis overlaps in some way, and this holds true for almost all methods of classification in psychology, including the MBTI test this was based on. Again, I&apos;ve decided not to think too deeply about it as this is ultimately something I&apos;ve made for fun; it&apos;s not meant to be a definitive scientific measure.
               </p>
             </div>
 
