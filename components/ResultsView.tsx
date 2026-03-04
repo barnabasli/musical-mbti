@@ -10,11 +10,12 @@ interface ResultsViewProps {
   scores: Scores;
   bounds: AxisBounds;
   onRetake: () => void;
+  onBlog: () => void;
 }
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export function ResultsView({ scores, bounds, onRetake }: ResultsViewProps) {
+export function ResultsView({ scores, bounds, onRetake, onBlog }: ResultsViewProps) {
   const type        = calculateType(scores);
   const archetype   = getArchetype(type);
   const axisResults = getAxisResults(scores, bounds);
@@ -182,13 +183,19 @@ export function ResultsView({ scores, bounds, onRetake }: ResultsViewProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.6 }}
-          className="flex justify-center"
+          className="flex justify-center gap-3"
         >
           <button
             onClick={onRetake}
             className="rounded-full border border-[#DDE3EC] bg-white px-7 py-2.5 text-sm font-medium text-[#4E5F77] shadow-[0_1px_3px_rgba(0,0,0,0.05)] transition-all duration-200 hover:border-[#C0CBDA] hover:text-[#1A2133] hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)]"
           >
             ↺ Retake Quiz
+          </button>
+          <button
+            onClick={onBlog}
+            className="rounded-full border border-[#DDE3EC] bg-white px-7 py-2.5 text-sm font-medium text-[#4E5F77] shadow-[0_1px_3px_rgba(0,0,0,0.05)] transition-all duration-200 hover:border-[#C0CBDA] hover:text-[#1A2133] hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)]"
+          >
+            Behind the Test →
           </button>
         </motion.div>
 

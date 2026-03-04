@@ -7,17 +7,22 @@ import { AnswerOption, BinaryQuestion, LikertOption, LikertQuestion, LikertScale
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
+interface AnswerInfo {
+  label: string;
+  text: string;
+}
+
 interface QuizViewProps {
   question: Question;
   questionIndex: number;
   totalQuestions: number;
-  onAnswer: (scores: ScoreAdjustment[]) => void;
+  onAnswer: (scores: ScoreAdjustment[], info: AnswerInfo) => void;
 }
 
 // ── Main component ────────────────────────────────────────────────────────────
 
 export function QuizView({ question, questionIndex, totalQuestions, onAnswer }: QuizViewProps) {
-  const [progressPercent, setProgressPercent] = useState((questionIndex / totalQuestions) * 100);
+  const [progressPercent, setProgressPercent] = useState(((questionIndex + 1) / totalQuestions) * 100);
   const [coverExpanded, setCoverExpanded] = useState(false);
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
@@ -37,16 +42,11 @@ export function QuizView({ question, questionIndex, totalQuestions, onAnswer }: 
     return () => clearTimeout(timer);
   }, [question.id]);
 
-  function handleAnswer(scores: ScoreAdjustment[]) {
-    // 1. Immediately disable clicking so the user can't double-click
-    setIsInteractable(false); 
-    
-    // 2. Update the progress bar
+  function handleAnswer(scores: ScoreAdjustment[], info: AnswerInfo) {
+    setIsInteractable(false);
     const next = ((questionIndex + 1) / totalQuestions) * 100;
     setProgressPercent(next);
-    
-    // 3. Wait for the exit animation, then tell the parent to switch questions
-    setTimeout(() => onAnswer(scores), 480);
+    setTimeout(() => onAnswer(scores, info), 480);
   }
 
   return (
@@ -524,21 +524,23 @@ function LikertScaleGroup({
   cinematic,
 }: {
   question: LikertQuestion;
-  onAnswer: (scores: ScoreAdjustment[]) => void;
+  onAnswer: (scores: ScoreAdjustment[], info: AnswerInfo) => void;
   cinematic?: boolean;
 }) {
   const [firstScores, setFirstScores] = useState<ScoreAdjustment[] | null>(null);
+  const [firstLabel, setFirstLabel] = useState<string | null>(null);
 
-  function handleFirst(scores: ScoreAdjustment[]) {
+  function handleFirst(scores: ScoreAdjustment[], info: AnswerInfo) {
     if (!question.secondScale) {
-      onAnswer(scores);
+      onAnswer(scores, info);
     } else {
       setFirstScores(scores);
+      setFirstLabel(info.label);
     }
   }
 
-  function handleSecond(scores: ScoreAdjustment[]) {
-    onAnswer([...(firstScores ?? []), ...scores]);
+  function handleSecond(scores: ScoreAdjustment[], info: AnswerInfo) {
+    onAnswer([...(firstScores ?? []), ...scores], { label: `${firstLabel}/${info.label}`, text: '' });
   }
 
   return (
@@ -592,14 +594,14 @@ function SingleScale({
   leftLabel: string;
   rightLabel: string;
   options: LikertScale['options'];
-  onSelect: (scores: ScoreAdjustment[]) => void;
+  onSelect: (scores: ScoreAdjustment[], info: AnswerInfo) => void;
   cinematic?: boolean;
 }) {
   const [selected, setSelected] = useState<number | null>(null);
 
   function handleClick(opt: LikertOption) {
     setSelected(opt.value);
-    onSelect(opt.scores);
+    onSelect(opt.scores, { label: String(opt.value), text: '' });
   }
 
   return (
@@ -657,27 +659,33 @@ function MultiChoiceGroup({
   cinematic,
 }: {
   question: BinaryQuestion;
-  onAnswer: (scores: ScoreAdjustment[]) => void;
+  onAnswer: (scores: ScoreAdjustment[], info: AnswerInfo) => void;
   cinematic?: boolean;
 }) {
   const [firstScores, setFirstScores] = useState<ScoreAdjustment[] | null>(null);
+  const [firstInfo, setFirstInfo] = useState<AnswerInfo | null>(null);
   const [cascadeAnswers, setCascadeAnswers] = useState<AnswerOption[] | null>(null);
   const [showSecond, setShowSecond] = useState(false);
 
   function handlePrimary(answer: AnswerOption) {
     if (answer.secondAnswers) {
       setFirstScores(answer.scores);
+      setFirstInfo({ label: answer.label, text: answer.text });
       setCascadeAnswers(answer.secondAnswers);
     } else if (question.secondQuestion) {
       setFirstScores(answer.scores);
+      setFirstInfo({ label: answer.label, text: answer.text });
       setShowSecond(true);
     } else {
-      onAnswer(answer.scores);
+      onAnswer(answer.scores, { label: answer.label, text: answer.text });
     }
   }
 
-  function handleSecondary(scores: ScoreAdjustment[]) {
-    onAnswer([...(firstScores ?? []), ...scores]);
+  function handleSecondary(answer: AnswerOption) {
+    onAnswer(
+      [...(firstScores ?? []), ...answer.scores],
+      { label: `${firstInfo?.label}→${answer.label}`, text: `${firstInfo?.text} / ${answer.text}` },
+    );
   }
 
   let activeKey: string;
@@ -690,7 +698,7 @@ function MultiChoiceGroup({
         key={answer.label}
         answer={answer}
         index={i}
-        onClick={() => handleSecondary(answer.scores)}
+        onClick={() => handleSecondary(answer)}
         isLast={i === cascadeAnswers.length - 1}
         cinematic={cinematic}
       />
@@ -710,7 +718,7 @@ function MultiChoiceGroup({
             key={answer.label}
             answer={answer}
             index={i}
-            onClick={() => handleSecondary(answer.scores)}
+            onClick={() => handleSecondary(answer)}
             isLast={i === question.secondQuestion!.answers.length - 1}
             cinematic={cinematic}
           />

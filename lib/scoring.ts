@@ -229,68 +229,68 @@ interface Archetype {
 
 const ARCHETYPES: Partial<Record<string, Archetype>> = {
   VCHI: {
-    name: 'The Comfort Pick',
+    name: 'The Average Joe',
     description: 'Has many comfort playlists they will listen to for hours on end. They tend to be emotionally affected by music and love immersing themselves in their favorite songs.',
   },
   VCHP: {
-    name: 'The Storyteller',
-    description: 'Wants an emotional, comforting experience and appreciates a narrative arc. They appreciate music that guides their feelings toward a resolution.',
+    name: 'The Healing Era Girl',
+    description: 'Wants an emotional experience and appreciates music that guides their feelings toward a resolution. You probably like songs that tell a story and relate deeply to one of your favorite artists.',
   },
   VCDI: {
-    name: 'The Vibe Rider',
-    description: 'Loves locking into a vibey, comfortable space. However, they don\'t just exist in this space and are are instead actively drawn to sections of songs they find interesting.',
+    name: 'The Failed Guitar Player',
+    description: 'Loves locking into a vibey, comfortable space. However, you don\'t just exist in this space and are are instead drawn to sections of songs you may find interesting. You\'re love immersing yourself in little details of songs you enjoy.',
   },
   VCDP: {
-    name: 'The Pop Connoisseur',
-    description: 'Enjoys a predictable, evolving emotional trajectory, but delights primarily in emotional peaks, vocal acrobatics, and punchy melodic hooks placed along the journey.',
+    name: 'The Nerdy Swiftie',
+    description: 'You connect deeply with the emotional nuances of your favorite tracks. You listen closely to the details and obsess over how a specific lyric or subtle shift carefully builds the emotional narrative from the first verse to the final chorus.',
   },
   VSHI: {
-    name: 'The Mood Alchemist',
-    description: 'Seeks intense, unexpected emotional atmospheres to immerse themselves in. They enjoy lingering in unconventional, dissonant, or bizarre overarching moods without needing the song to go anywhere.',
+    name: 'The Alt Middle Schooler',
+    description: 'Seeks an intense emotional atmosphere to immerse themselves in. You enjoy lingering in unconventional, dissonant, and bizarre overarching moods without needing the song to go anywhere, and care a lot about the overall feeling that a song instills in you.',
   },
   VSHP: {
-    name: 'The Theatrical Explorer',
-    description: 'Wants an unpredictable emotional experience with a dramatic overarching narrative. They thrive on music that builds its emotional direction toward a grand climax.',
+    name: 'The Theater Kid',
+    description: 'Wants a shocking emotional experience with a lot of drama. You likely thrive on songs that build its emotional direction toward a grand climax and love listening to musicals. You\'re open to trying new music and appreciate when it tells a story.',
   },
   VSDI: {
-    name: 'The Fever Dreamer',
-    description: 'Immerses themselves in highly unconventional, bizarre emotional atmospheres. They fixate on shocking emotional outbursts, jarring atmospheric shifts, or intense vocal deliveries.',
+    name: 'The Bedroom Philosopher',
+    description: 'Loves music that immerses you in its bizzare emotional atmospheres. You pay attention to little moments in each song and are open to trying new genres. You probably listen to a lot of music and curate your playlist carefully.',
   },
   VSDP: {
-    name: 'The Chaos Chaser',
-    description: 'Craves music that takes them on an unpredictable journey, fueled by shocking, brilliant moments of disruption and intense localized shifts as the track evolves.',
+    name: 'The Unemployed Artist',
+    description: 'Craves music that takes them on a journey, fueled by brilliant moments of disruption as the track evolves. You appreciate originality in music and like songs that are different for the sake of being different.',
   },
   MCHI: {
-    name: 'The Formalist',
-    description: 'Appreciates structurally sound, familiar compositions meant to be experienced as a complete, unchanging work. They evaluate adherence to established musical theory at a macro level.',
+    name: 'The Retired Conductor',
+    description: 'You view music structurally and love pieces meant to be experienced as a complete, cohesive whole. You find deep satisfaction in resting within a perfectly balanced composition. You take a bird\'s-eye view of the music and appreciate its grand design and overarching atmosphere.',
   },
   MCHP: {
-    name: 'The Symphonic Voyager',
-    description: 'Loves well-structured, familiar musical forms that develop logically. They appreciate how traditional compositional techniques are used to build momentum toward a satisfying musical climax.',
+    name: 'The Hans Zimmer Fanboy',
+    description: 'Loves structured musical forms that develop logically and have an emotional payoff at the end. You appreciate songs following traditional music theory and enjoy songs that build momentum toward a satisfying musical climax.',
   },
   MCDI: {
-    name: 'The Analyst',
-    description: 'Enjoys breaking down the theory and interplay of a steady, reliable groove or complex but familiar musical pattern.',
+    name: 'The Casual Musician',
+    description: 'You appreciate the deep mechanics of a well-crafted composition. You find immense satisfaction in locking into a steady, reliable piece that\'s still interesting, and are able to immerse your brain into the little details that make up your favorite songs.',
   },
   MCDP: {
-    name: 'The Virtuoso',
-    description: 'Likes more standard musical structures that move forward, but focuses their attention heavily on the technical brilliance of individual performances or the highly specific development of a localized motif over time.',
+    name: 'The Unsufferable Virtuoso',
+    description: 'Likes music that follows the rules, but is still creative and sophisticated enough that it satisfies your brain. You appreciate music that moves forward and likely have an analytical ear. You focus your attention on the technical brilliance of individual sections or the specific development of localized motifs.',
   },
   MSHI: {
-    name: 'The Abstract Surveyor',
-    description: 'Appreciates highly unconventional, unpredictable musical environments. They immerse themselves in abstract or dissonant soundscapes, evaluating the overarching theoretical framework and structural rules governing the chaos.',
+    name: 'The "It\'s Actually Art" Guy',
+    description: 'Appreciates highly unconventional, unpredictable musical environments. You like to immerse yourself in abstract or dissonant soundscapes and care about the overarching frameworks and structure governing each song.',
   },
   MSHP: {
-    name: 'The Prog Architect',
-    description: 'Demands complex, highly unconventional compositions that push musical boundaries while constantly driving forward through unpredictable structural and rhythmic phases.',
+    name: 'The Elitist',
+    description: 'Demands complex and unconventional compositions that push musical boundaries while constantly driving forward through unpredictable structural and rhythmic phases. You love experimentalist music but require it to make sense somehow or move somewhere.',
   },
   MSDI: {
-    name: 'The Deconstructor',
-    description: 'Fascinated by highly technical, unpredictable micro-interactions, complex time signatures, and intricate voicing details within a more static and overarching form.',
+    name: 'The Hyperfixator',
+    description: 'Fascinated by technical, unpredictable micro-interactions, complexity, and intricate details within a song. You like music that constantly occupies your brain with something you find interesting, whatever that may be. You can likely loop a song you find appealing for hours without getting bored of it.',
   },
   MSDP: {
-    name: 'The Jazz Maverick',
-    description: 'Thrives on technical complexity and sudden structural shifts. They focus intensely on brilliant, unpredictable localized interplay between instruments and love structured songs that continuously change for a purpose.',
+    name: 'The Aesthetic Snob',
+    description: 'Thrives on technical complexity and sudden structural shifts and loves brilliant, unpredictable localized interplay between instruments. You like songs that are complex but not needlessly complex, as the complexity has to serve a purpose. You value musicality, originality, and beauty in music above all.',
   }
 };
 

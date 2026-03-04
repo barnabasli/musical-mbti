@@ -6,10 +6,12 @@ import { AnimatePresence } from 'framer-motion';
 import { LandingView }  from '@/components/LandingView';
 import { QuizView }     from '@/components/QuizView';
 import { ResultsView }  from '@/components/ResultsView';
+import { BlogView }     from '@/components/BlogView';
 
 import { questions }                                     from '@/lib/questions';
-import { initialScores, applyScores, computePerQuestionBounds, calculateBoundsFromHistory } from '@/lib/scoring';
+import { initialScores, applyScores, computePerQuestionBounds, calculateBoundsFromHistory, calculateType } from '@/lib/scoring';
 import { AppView, ScoreAdjustment, Scores }                                                  from '@/lib/types';
+import { saveQuizResponse, QuizAnswer }                   from '@/lib/supabase';
 
 // ── Cinematic media & Cover preloaders ─────────────────────────────────────────
 
@@ -27,7 +29,6 @@ const DEFERRED_VIDEOS = [
   '/backgrounds/ashes.mp4',
   '/backgrounds/holdsworth.mp4',
   '/backgrounds/kendrick.mp4',
-  '/backgrounds/zimerman.mp4',
 ];
 
 const DEFERRED_IMAGES = [
@@ -35,7 +36,6 @@ const DEFERRED_IMAGES = [
   // Add the rest of your album covers here
   '/covers/ashes.jpg',
   '/covers/tokyo%20dream.jpg',
-  '/covers/rach2.jpg',
 ];
 
 function MediaPreloader({ videos = [], images = [] }: { videos?: string[], images?: string[] }) {
@@ -63,6 +63,7 @@ export default function Home() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [scores, setScores]             = useState<Scores>(initialScores);
   const [answerHistory, setAnswerHistory] = useState<ScoreAdjustment[][]>([]);
+  const [quizAnswers, setQuizAnswers]     = useState<QuizAnswer[]>([]);
   const [shouldPreloadDeferred, setShouldPreloadDeferred] = useState(false);
 
   // Wait for the window to fully load before triggering the heavy media downloads
@@ -89,29 +90,46 @@ export default function Home() {
     setCurrentIndex(0);
     setScores(initialScores);
     setAnswerHistory([]);
+    setQuizAnswers([]);
     setView('quiz');
   }, []);
 
   const handleAnswer = useCallback(
-    (adjustments: ScoreAdjustment[]) => {
+    (adjustments: ScoreAdjustment[], info: { label: string; text: string }) => {
       const newScores = applyScores(scores, adjustments);
       setScores(newScores);
       setAnswerHistory((prev) => [...prev, adjustments]);
 
+      const question = questions[currentIndex];
+      const record: QuizAnswer = {
+        questionId: question.id,
+        scenario: question.scenario,
+        label: info.label,
+        text: info.text,
+      };
+
       if (currentIndex + 1 >= questions.length) {
+        const allAnswers = [...quizAnswers, record];
+        saveQuizResponse(calculateType(newScores), newScores, allAnswers);
         setView('results');
       } else {
+        setQuizAnswers((prev) => [...prev, record]);
         setCurrentIndex((prev) => prev + 1);
       }
     },
-    [scores, currentIndex],
+    [scores, currentIndex, quizAnswers],
   );
 
   const handleRetake = useCallback(() => {
     setCurrentIndex(0);
     setScores(initialScores);
+    setAnswerHistory([]);
+    setQuizAnswers([]);
     setView('landing');
   }, []);
+
+  const handleBlog   = useCallback(() => setView('blog'),    []);
+  const handleBackFromBlog = useCallback(() => setView('results'), []);
 
   // ── Render ─────────────────────────────────────────────────────────────────
 
@@ -139,12 +157,17 @@ export default function Home() {
         )}
 
         {view === 'results' && (
-          <ResultsView 
-            key="results" 
-            scores={scores} 
-            bounds={bounds} 
-            onRetake={handleRetake} 
+          <ResultsView
+            key="results"
+            scores={scores}
+            bounds={bounds}
+            onRetake={handleRetake}
+            onBlog={handleBlog}
           />
+        )}
+
+        {view === 'blog' && (
+          <BlogView key="blog" onBack={handleBackFromBlog} />
         )}
       </AnimatePresence>
     </main>

@@ -138,7 +138,7 @@ export interface AxisResult {
 export type MusicalType = `${'V' | 'M'}${'C' | 'S'}${'H' | 'D'}${'I' | 'P'}`;
 
 /** Which top-level view is currently rendered. */
-export type AppView = 'landing' | 'quiz' | 'results';
+export type AppView = 'landing' | 'quiz' | 'results' | 'blog';
 
 export interface AxisResult {
   axis: Axis;
