@@ -20,16 +20,32 @@ export function QuizView({ question, questionIndex, totalQuestions, onAnswer }: 
   const [progressPercent, setProgressPercent] = useState((questionIndex / totalQuestions) * 100);
   const [coverExpanded, setCoverExpanded] = useState(false);
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
-  // Needed so the portal (which requires document.body) is only rendered client-side.
   const [isMounted, setIsMounted] = useState(false);
+  
+  // Track if animations are finished to prevent early clicks
+  const [isInteractable, setIsInteractable] = useState(false);
 
   const isCinematic = !!(question.cinematicVideoSrc || question.cinematicImageSrc);
 
   useEffect(() => { setIsMounted(true); }, []);
   useEffect(() => { setIsAudioPlaying(false); }, [question.id]);
+  
+  // Disable interactions on question change, re-enable after 700ms
+  useEffect(() => {
+    setIsInteractable(false);
+    const timer = setTimeout(() => setIsInteractable(true), 700);
+    return () => clearTimeout(timer);
+  }, [question.id]);
+
   function handleAnswer(scores: ScoreAdjustment[]) {
+    // 1. Immediately disable clicking so the user can't double-click
+    setIsInteractable(false); 
+    
+    // 2. Update the progress bar
     const next = ((questionIndex + 1) / totalQuestions) * 100;
     setProgressPercent(next);
+    
+    // 3. Wait for the exit animation, then tell the parent to switch questions
     setTimeout(() => onAnswer(scores), 480);
   }
 
@@ -40,27 +56,21 @@ export function QuizView({ question, questionIndex, totalQuestions, onAnswer }: 
         exit={{ opacity: 0 }}
         transition={{ duration: 0.35 }}
         className="grain flex min-h-screen flex-col"
-        // z-index: 20 places this stacking context ABOVE the portal cinematic
-        // background (z-index: 10), so content always renders on top of the video.
         style={{ zIndex: 20, position: 'relative' }}
       >
-        {/* ── Entry fade overlay ───────────────────────────────────────────────
-            Fades from white → transparent on mount instead of animating the
-            outer container's opacity. This keeps backdrop-filter working on
-            child elements from the very first frame (backdrop-filter breaks
-            whenever an ancestor has opacity < 1). ── */}
+        {/* Entry fade overlay */}
         <motion.div
           initial={{ opacity: 1 }}
           animate={{ opacity: 0 }}
           transition={{ duration: 0.35 }}
           style={{ position: 'fixed', inset: 0, zIndex: 999, background: '#fff', pointerEvents: 'none' }}
         />
-        {/* White background overlay — always mounted; fades to transparent when
-            cinematic is active so the portal video shows through underneath. */}
+        
+        {/* White background overlay */}
         <motion.div
           initial={{ opacity: isCinematic ? 0 : 1 }}
           animate={{ opacity: isCinematic ? 0 : 1 }}
-          transition={{ duration: isCinematic ? 0.1 : 0.5, ease: 'easeInOut' }}
+          transition={{ duration: 0.55, ease: 'easeInOut' }}
           style={{
             position: 'absolute',
             inset: 0,
@@ -70,10 +80,10 @@ export function QuizView({ question, questionIndex, totalQuestions, onAnswer }: 
           }}
         />
 
-        {/* ── UI content — z-index: 2 keeps it above the white overlay ───── */}
+        {/* ── UI content ─────────────────────────────────────────────────── */}
         <div style={{ position: 'relative', zIndex: 2, display: 'flex', flexDirection: 'column', flex: 1 }}>
 
-          {/* ── Cover lightbox ─────────────────────────────────────────────── */}
+          {/* Cover lightbox */}
           <AnimatePresence>
             {coverExpanded && question.coverSrc && (
               <motion.div
@@ -98,41 +108,52 @@ export function QuizView({ question, questionIndex, totalQuestions, onAnswer }: 
             )}
           </AnimatePresence>
 
-          {/* ── Wordmark + counter ────────────────────────────────────────── */}
+          {/* Wordmark + counter */}
           <header className="flex items-center justify-between px-8 py-6 sm:px-12">
-            <span
+            <motion.span
               className="text-[10px] font-medium uppercase tracking-[0.3em]"
-              style={{ color: isCinematic ? 'rgba(255,255,255,0.45)' : '#a3a3a3' }}
+              animate={{ 
+                color: isCinematic ? 'rgba(255, 255, 255, 0.45)' : 'rgba(163, 163, 163, 1)' 
+              }}
+              transition={{ duration: 0.55, ease: [0.4, 0, 0.2, 1] }}
             >
               Musical MBTI
-            </span>
-            <span
+            </motion.span>
+            <motion.span
               className="text-[10px] font-medium uppercase tracking-[0.25em]"
-              style={{ color: isCinematic ? 'rgba(255,255,255,0.3)' : '#d4d4d4' }}
+              animate={{ 
+                color: isCinematic ? 'rgba(255, 255, 255, 0.3)' : 'rgba(212, 212, 212, 1)' 
+              }}
+              transition={{ duration: 0.55, ease: [0.4, 0, 0.2, 1] }}
             >
               {questionIndex + 1} / {totalQuestions}
-            </span>
+            </motion.span>
           </header>
 
-          {/* ── Progress bar ──────────────────────────────────────────────── */}
+          {/* Progress bar */}
           <div className="px-8 sm:px-12">
             <div className="mx-auto max-w-2xl">
-              <div
+              <motion.div
                 className="h-px w-full"
-                style={{ background: isCinematic ? 'rgba(255,255,255,0.15)' : '#e5e5e5' }}
+                animate={{ 
+                  backgroundColor: isCinematic ? 'rgba(255, 255, 255, 0.15)' : 'rgba(229, 229, 229, 1)' 
+                }}
+                transition={{ duration: 0.55, ease: [0.4, 0, 0.2, 1] }}
               >
                 <motion.div
                   className="h-full"
-                  style={{ background: isCinematic ? 'rgba(255,255,255,0.5)' : '#a3a3a3' }}
                   initial={{ width: '0%' }}
-                  animate={{ width: `${progressPercent}%` }}
+                  animate={{ 
+                    width: `${progressPercent}%`,
+                    backgroundColor: isCinematic ? 'rgba(255, 255, 255, 0.5)' : 'rgba(163, 163, 163, 1)'
+                  }}
                   transition={{ duration: 0.55, ease: [0.4, 0, 0.2, 1] }}
                 />
-              </div>
+              </motion.div>
             </div>
           </div>
 
-          {/* ── Question card ─────────────────────────────────────────────── */}
+          {/* Question card */}
           <div className="flex flex-1 items-center justify-center px-8 py-16 sm:px-12">
             <AnimatePresence mode="wait">
               <motion.div
@@ -144,53 +165,67 @@ export function QuizView({ question, questionIndex, totalQuestions, onAnswer }: 
                 className="w-full max-w-2xl"
               >
                 {/* Question body */}
-                <p
+                <motion.p
+                  initial={{ opacity: isCinematic ? 0 : 1 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: isCinematic ? 0 : 1 }}
+                  transition={{ duration: 0.38, ease: [0.4, 0, 0.2, 1] }}
                   className="mb-10 text-[clamp(1.25rem,3vw,1.75rem)] font-light leading-[1.35] tracking-[-0.01em]"
                   style={{ color: isCinematic ? 'rgba(255,255,255,0.95)' : '#171717' }}
                 >
                   {question.questionText}
-                </p>
+                </motion.p>
 
-                {/* Audio player(s) */}
-                {question.audioSrc && (
-                  <div className="mb-10 flex flex-col gap-4">
-                    <AudioPlayer
-                      src={question.audioSrc}
-                      label={question.audioLabel}
-                      coverSrc={question.coverSrc}
-                      onExpandCover={question.coverSrc ? () => setCoverExpanded(true) : undefined}
-                      accentColor="#C4924A"
-                      key={`${question.id}-1`}
-                      onPlayingChange={isCinematic ? setIsAudioPlaying : undefined}
-                      cinematic={isCinematic}
-                    />
-                    {question.audioSrc2 && (
+                {/* Interactable Wrapper for Audio & Answers */}
+                <div style={{ pointerEvents: isInteractable ? 'auto' : 'none' }}>
+                  
+                  {/* Audio player(s) */}
+                  {question.audioSrc && (
+                    <div className="mb-10 flex flex-col gap-4">
                       <AudioPlayer
-                        src={question.audioSrc2}
-                        label={question.audioLabel2}
-                        accentColor="#5A98BE"
-                        key={`${question.id}-2`}
+                        src={question.audioSrc}
+                        label={question.audioLabel}
+                        coverSrc={question.coverSrc}
+                        onExpandCover={question.coverSrc ? () => setCoverExpanded(true) : undefined}
+                        accentColor="#C4924A"
+                        key={`${question.id}-1`}
+                        onPlayingChange={isCinematic ? setIsAudioPlaying : undefined}
+                        cinematic={isCinematic}
                       />
-                    )}
-                  </div>
-                )}
+                      {question.audioSrc2 && (
+                        <AudioPlayer
+                          src={question.audioSrc2}
+                          label={question.audioLabel2}
+                          accentColor="#5A98BE"
+                          key={`${question.id}-2`}
+                          cinematic={isCinematic}
+                        />
+                      )}
+                    </div>
+                  )}
 
-                {/* Answer options */}
-                {question.format === 'likert' ? (
-                  <LikertScaleGroup question={question} onAnswer={handleAnswer} cinematic={isCinematic} />
-                ) : (
-                  <MultiChoiceGroup question={question} onAnswer={handleAnswer} cinematic={isCinematic} />
-                )}
+                  {/* Answer options */}
+                  <motion.div
+                    initial={{ opacity: isCinematic ? 0 : 1 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: isCinematic ? 0 : 1 }}
+                    transition={{ duration: 0.38, ease: [0.4, 0, 0.2, 1] }}
+                  >
+                    {question.format === 'likert' ? (
+                      <LikertScaleGroup question={question} onAnswer={handleAnswer} cinematic={isCinematic} />
+                    ) : (
+                      <MultiChoiceGroup question={question} onAnswer={handleAnswer} cinematic={isCinematic} />
+                    )}
+                  </motion.div>
+
+                </div>
               </motion.div>
             </AnimatePresence>
           </div>
         </div>
       </motion.div>
 
-      {/* ── Cinematic background portal ──────────────────────────────────────
-          Rendered at document.body so position:fixed covers the full viewport
-          including the scrollbar gutter — no white strips on the right edge.
-          AnimatePresence lives outside the condition so exit animations fire. ── */}
+      {/* Cinematic background portal */}
       {isMounted && createPortal(
         <AnimatePresence mode="wait">
           {isCinematic && (
@@ -220,9 +255,6 @@ export function QuizView({ question, questionIndex, totalQuestions, onAnswer }: 
 }
 
 // ── Cinematic background ───────────────────────────────────────────────────────
-// Renders the background media + gradient. Supports video (blur-on-pause) and
-// image (Ken Burns zoom/pan). The portal wrapper handles position, z-index, and
-// the fade-in/out animation.
 
 const bottomGradient = {
   position: 'absolute' as const,
@@ -262,9 +294,6 @@ function CinematicBackground({
   if (imageSrc) {
     return (
       <>
-        {/* Extension wrapper: extends 20px beyond the viewport-clipped portal boundary.
-            This ensures blur on the img samples from real pixels at the viewport edge
-            (not from transparent space), eliminating feathered-edge flicker. */}
         <div style={{ position: 'absolute', inset: '-20px' }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -294,7 +323,6 @@ function CinematicBackground({
 
   return (
     <>
-      {/* Extension wrapper: see comment above in imageSrc branch. */}
       <div style={{ position: 'absolute', inset: '-20px' }}>
         <video
           ref={videoRef}
@@ -346,17 +374,17 @@ function AudioPlayer({
   onPlayingChange,
   cinematic,
 }: AudioPlayerProps) {
-  const audioRef                    = useRef<HTMLAudioElement>(null);
-  const [playing, setPlaying]       = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const [playing, setPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration]     = useState(0);
+  const [duration, setDuration] = useState(0);
 
   useEffect(() => {
     const el = audioRef.current;
     if (!el) return;
-    const onTime   = () => setCurrentTime(el.currentTime);
+    const onTime = () => setCurrentTime(el.currentTime);
     const onLoaded = () => setDuration(el.duration);
-    const onEnded  = () => {
+    const onEnded = () => {
       setPlaying(false);
       onPlayingChange?.(false);
     };
@@ -388,28 +416,28 @@ function AudioPlayer({
 
   function fmt(s: number) {
     if (!isFinite(s)) return '0:00';
-    const m   = Math.floor(s / 60);
+    const m = Math.floor(s / 60);
     const sec = Math.floor(s % 60);
     return `${m}:${sec.toString().padStart(2, '0')}`;
   }
 
   return (
-    <div
+    <motion.div
+      initial={{ opacity: cinematic ? 0 : 1 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: cinematic ? 0 : 1 }}
+      transition={{ duration: 0.38, ease: [0.4, 0, 0.2, 1] }}
       className="overflow-hidden rounded-xl"
       style={{
-        // Transparent card — backdrop blur applies to the whole card area,
-        // giving the album cover a frosted-glass look.
-        // The controls section gets its own opaque background below.
-        background:           'transparent',
-        backdropFilter:       cinematic ? 'blur(16px)' : 'none',
+        background: 'transparent',
+        backdropFilter: cinematic ? 'blur(16px)' : 'none',
         WebkitBackdropFilter: cinematic ? 'blur(16px)' : 'none',
-        border:               '1px solid rgba(255, 255, 255, 0.5)',
-        boxShadow:            '0 1px 4px rgba(0,0,0,0.04), 0 4px 20px rgba(0,0,0,0.05)',
+        border: '1px solid rgba(255, 255, 255, 0.5)',
+        boxShadow: '0 1px 4px rgba(0,0,0,0.04), 0 4px 20px rgba(0,0,0,0.05)',
       }}
     >
       <audio ref={audioRef} src={src} preload="metadata" />
 
-      {/* ── Album cover — very translucent, shows cinematic video through ── */}
       {coverSrc && (
         <button
           onClick={onExpandCover}
@@ -436,7 +464,6 @@ function AudioPlayer({
         </button>
       )}
 
-      {/* ── Controls — opaque white, returning to original appearance ────── */}
       <div
         className="px-5 pb-5 pt-4"
         style={{ background: 'rgba(255, 255, 255, 0.75)' }}
@@ -485,7 +512,7 @@ function AudioPlayer({
           <span className="tabular-nums text-[10px] text-neutral-400">{fmt(duration)}</span>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -577,7 +604,6 @@ function SingleScale({
 
   return (
     <div>
-      {/* Pole labels */}
       <div className="mb-6 flex justify-between">
         <span className={`max-w-[42%] text-sm font-light leading-snug ${cinematic ? 'text-white/70' : 'text-neutral-500'}`}>
           {leftLabel}
@@ -587,7 +613,6 @@ function SingleScale({
         </span>
       </div>
 
-      {/* Five-point buttons */}
       <div className="grid grid-cols-5 gap-2">
         {options.map((opt, i) => {
           const isSelected = selected === opt.value;
@@ -655,7 +680,6 @@ function MultiChoiceGroup({
     onAnswer([...(firstScores ?? []), ...scores]);
   }
 
-  // ── Determine which panel to show ───────────────────────────────────────────
   let activeKey: string;
   let activeContent: React.ReactNode;
 
@@ -745,7 +769,6 @@ function AnswerButton({ answer, index, isLast = false, onClick, cinematic }: Ans
           : 'border-neutral-200 hover:border-neutral-300'
       }`}
     >
-      {/* Letter label */}
       <span
         className={`shrink-0 text-[10px] font-medium uppercase tracking-[0.2em] transition-colors duration-200 ${
           cinematic
@@ -756,7 +779,6 @@ function AnswerButton({ answer, index, isLast = false, onClick, cinematic }: Ans
         {answer.label}
       </span>
 
-      {/* Answer text */}
       <span
         className={`flex-1 text-[15px] font-light leading-relaxed transition-colors duration-200 ${
           cinematic
@@ -767,7 +789,6 @@ function AnswerButton({ answer, index, isLast = false, onClick, cinematic }: Ans
         {answer.text}
       </span>
 
-      {/* Arrow */}
       <span
         className={`shrink-0 self-center text-[13px] transition-all duration-300 group-hover:translate-x-1 ${
           cinematic
