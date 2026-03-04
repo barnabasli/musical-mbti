@@ -31,76 +31,120 @@ export function calculateType(scores: Scores): string {
 
 export type AxisBounds = Record<Axis, { min: number; max: number }>;
 
+/** Shared helpers used by bounds calculators. */
+const emptyScores = (): Scores => ({ motivation: 0, entropy: 0, scope: 0, momentum: 0 });
+const addScores = (a: Scores, b: Scores): Scores => ({
+  motivation: a.motivation + b.motivation,
+  entropy:    a.entropy    + b.entropy,
+  scope:      a.scope      + b.scope,
+  momentum:   a.momentum   + b.momentum,
+});
+
+/** Returns all possible combined outcome scores for a single question. */
+function questionOutcomes(q: any): Scores[] {
+  let outcomes: Scores[] = [emptyScores()];
+
+  if (q.answers && !q.answers.some((a: any) => a.secondAnswers)) {
+    outcomes = q.answers.map((a: any) => applyScores(emptyScores(), a.scores || []));
+  } else if (q.answers && q.answers.some((a: any) => a.secondAnswers)) {
+    outcomes = [];
+    for (const a of q.answers) {
+      const base = applyScores(emptyScores(), a.scores || []);
+      if (a.secondAnswers) {
+        for (const sa of a.secondAnswers) { outcomes.push(applyScores(base, sa.scores || [])); }
+      } else {
+        outcomes.push(base);
+      }
+    }
+  } else if (q.options) {
+    outcomes = q.options.map((o: any) => applyScores(emptyScores(), o.scores || []));
+  }
+
+  if (q.secondQuestion?.answers) {
+    const part2 = q.secondQuestion.answers.map((a: any) => applyScores(emptyScores(), a.scores || []));
+    const combined: Scores[] = [];
+    for (const o1 of outcomes) { for (const o2 of part2) { combined.push(addScores(o1, o2)); } }
+    outcomes = combined;
+  }
+
+  if (q.secondScale?.options) {
+    const part2 = q.secondScale.options.map((o: any) => applyScores(emptyScores(), o.scores || []));
+    const combined: Scores[] = [];
+    for (const o1 of outcomes) { for (const o2 of part2) { combined.push(addScores(o1, o2)); } }
+    outcomes = combined;
+  }
+
+  return outcomes;
+}
+
+/** Returns one AxisBounds entry per question (not summed). */
+export function computePerQuestionBounds(questions: any[]): AxisBounds[] {
+  return questions.map((q) => {
+    const outcomes = questionOutcomes(q);
+    const qBounds: AxisBounds = {
+      motivation: { min: 0, max: 0 },
+      entropy:    { min: 0, max: 0 },
+      scope:      { min: 0, max: 0 },
+      momentum:   { min: 0, max: 0 },
+    };
+    for (const axis of Object.keys(qBounds) as Axis[]) {
+      const s = outcomes.map((o) => o[axis]);
+      qBounds[axis].max = Math.max(0, ...s);
+      qBounds[axis].min = Math.min(0, ...s);
+    }
+    return qBounds;
+  });
+}
+
 /**
- * Parses the entire question array to find the maximum possible positive 
- * and negative points a user could earn on each axis. Accounts for 
- * nested questions and cascades.
+ * Computes axis bounds dynamically from the user's actual answer history.
+ * A question only contributes to an axis's bounds when the user's chosen
+ * answer had a non-zero effect on that axis — picking an unrelated answer
+ * never inflates the "total points possible" for axes the user didn't engage.
+ */
+export function calculateBoundsFromHistory(
+  perQuestionBounds: AxisBounds[],
+  answerHistory: import('./types').ScoreAdjustment[][],
+): AxisBounds {
+  const bounds: AxisBounds = {
+    motivation: { min: 0, max: 0 },
+    entropy:    { min: 0, max: 0 },
+    scope:      { min: 0, max: 0 },
+    momentum:   { min: 0, max: 0 },
+  };
+  for (let i = 0; i < perQuestionBounds.length; i++) {
+    const qBounds = perQuestionBounds[i];
+    const chosen  = answerHistory[i] ?? [];
+    for (const axis of Object.keys(bounds) as Axis[]) {
+      const chosenScore = chosen
+        .filter((adj) => adj.axis === axis)
+        .reduce((sum, adj) => sum + adj.points, 0);
+      if (chosenScore !== 0) {
+        bounds[axis].max += qBounds[axis].max;
+        bounds[axis].min += qBounds[axis].min;
+      }
+    }
+  }
+  return bounds;
+}
+
+/**
+ * Sums per-question bounds across all questions (static / theoretical maximum).
+ * Kept for reference; the quiz now uses calculateBoundsFromHistory instead.
  */
 export function calculateAxisBounds(questions: any[]): AxisBounds {
   const bounds: AxisBounds = {
     motivation: { min: 0, max: 0 },
-    entropy: { min: 0, max: 0 },
-    scope: { min: 0, max: 0 },
-    momentum: { min: 0, max: 0 },
+    entropy:    { min: 0, max: 0 },
+    scope:      { min: 0, max: 0 },
+    momentum:   { min: 0, max: 0 },
   };
-
-  const emptyScores = (): Scores => ({ motivation: 0, entropy: 0, scope: 0, momentum: 0 });
-  const addScores = (a: Scores, b: Scores): Scores => ({
-    motivation: a.motivation + b.motivation,
-    entropy: a.entropy + b.entropy,
-    scope: a.scope + b.scope,
-    momentum: a.momentum + b.momentum,
-  });
-
-  for (const q of questions) {
-    let outcomes: Scores[] = [emptyScores()];
-
-    // Part 1: Main answers (including cascades) or likert options
-    if (q.answers && !q.answers.some((a: any) => a.secondAnswers)) {
-      outcomes = q.answers.map((a: any) => applyScores(emptyScores(), a.scores || []));
-    } else if (q.answers && q.answers.some((a: any) => a.secondAnswers)) {
-      outcomes = [];
-      for (const a of q.answers) {
-        const base = applyScores(emptyScores(), a.scores || []);
-        if (a.secondAnswers) {
-          for (const sa of a.secondAnswers) {
-            outcomes.push(applyScores(base, sa.scores || []));
-          }
-        } else {
-          outcomes.push(base);
-        }
-      }
-    } else if (q.options) {
-      outcomes = q.options.map((o: any) => applyScores(emptyScores(), o.scores || []));
-    }
-
-    // Part 2: Independent secondary questions (cumulative)
-    if (q.secondQuestion?.answers) {
-      const part2Outcomes = q.secondQuestion.answers.map((a: any) => applyScores(emptyScores(), a.scores || []));
-      const combined = [];
-      for (const o1 of outcomes) {
-        for (const o2 of part2Outcomes) { combined.push(addScores(o1, o2)); }
-      }
-      outcomes = combined;
-    }
-
-    if (q.secondScale?.options) {
-      const part2Outcomes = q.secondScale.options.map((o: any) => applyScores(emptyScores(), o.scores || []));
-      const combined = [];
-      for (const o1 of outcomes) {
-        for (const o2 of part2Outcomes) { combined.push(addScores(o1, o2)); }
-      }
-      outcomes = combined;
-    }
-
-    // Add this question's max/min to the global bounds
+  for (const qBounds of computePerQuestionBounds(questions)) {
     for (const axis of Object.keys(bounds) as Axis[]) {
-      const possibleScores = outcomes.map(o => o[axis]);
-      bounds[axis].max += Math.max(0, ...possibleScores);
-      bounds[axis].min += Math.min(0, ...possibleScores);
+      bounds[axis].max += qBounds[axis].max;
+      bounds[axis].min += qBounds[axis].min;
     }
   }
-
   return bounds;
 }
 
@@ -185,68 +229,68 @@ interface Archetype {
 
 const ARCHETYPES: Partial<Record<string, Archetype>> = {
   VCHI: {
-    name: 'The Ambient Dreamer',
-    description: 'Seeks a cohesive, comforting emotional atmosphere. They value music that establishes a steady, soothing mood over its entire duration that doesn\'t demand attention.',
+    name: 'The Comfort Pick',
+    description: 'Has many comfort playlists they will listen to for hours on end. They tend to be emotionally affected by music and love immersing themselves in their favorite songs.',
   },
   VCHP: {
     name: 'The Storyteller',
-    description: 'Wants an emotional, comforting experience with a clear narrative arc. They appreciate music that predictably guides their feelings toward a satisfying resolution.',
+    description: 'Wants an emotional, comforting experience and appreciates a narrative arc. They appreciate music that guides their feelings toward a resolution.',
   },
   VCDI: {
-    name: 'The Groover',
-    description: 'Loves finding a comfortable emotional space and focusing heavily on the textures and rhythms within that state.',
+    name: 'The Vibe Rider',
+    description: 'Loves locking into a vibey, comfortable space. However, they don\'t just exist in this space and are are instead actively drawn to sections of songs they find interesting.',
   },
   VCDP: {
     name: 'The Pop Connoisseur',
-    description: 'Enjoys a predictable emotional trajectory but delights in the production details, vocal runs, and catchy hooks placed along the way.',
+    description: 'Enjoys a predictable, evolving emotional trajectory, but delights primarily in emotional peaks, vocal acrobatics, and punchy melodic hooks placed along the journey.',
   },
   VSHI: {
     name: 'The Mood Alchemist',
-    description: 'Seeks intense, unexpected emotional atmospheres to immerse themselves in. They enjoy lingering in unconventional, dissonant, or bizarre overarching moods.',
+    description: 'Seeks intense, unexpected emotional atmospheres to immerse themselves in. They enjoy lingering in unconventional, dissonant, or bizarre overarching moods without needing the song to go anywhere.',
   },
   VSHP: {
     name: 'The Theatrical Explorer',
-    description: 'Wants an unpredictable emotional experience with a dramatic overarching narrative. They thrive on music that continuously and shockingly shifts its emotional direction.',
+    description: 'Wants an unpredictable emotional experience with a dramatic overarching narrative. They thrive on music that builds its emotional direction toward a grand climax.',
   },
   VSDI: {
-    name: 'The Texture Junkie',
-    description: 'Loves unconventional emotional sonic landscapes, fixating on strange, unexpected sound design choices and raw audio details within a static mood.',
+    name: 'The Fever Dreamer',
+    description: 'Immerses themselves in highly unconventional, bizarre emotional atmospheres. They fixate on shocking emotional outbursts, jarring atmospheric shifts, or intense vocal deliveries.',
   },
   VSDP: {
     name: 'The Chaos Chaser',
-    description: 'Craves music that takes them on an unpredictable emotional journey, fueled by shocking, brilliant moments of sonic disruption and intense localized shifts.',
+    description: 'Craves music that takes them on an unpredictable journey, fueled by shocking, brilliant moments of disruption and intense localized shifts as the track evolves.',
   },
   MCHI: {
     name: 'The Formalist',
-    description: 'Appreciates structurally sound, familiar compositions meant to be experienced as a complete, unchanging work. They listen for the adherence to established musical theory.',
+    description: 'Appreciates structurally sound, familiar compositions meant to be experienced as a complete, unchanging work. They evaluate adherence to established musical theory at a macro level.',
   },
   MCHP: {
     name: 'The Symphonic Voyager',
-    description: 'Loves well-structured, familiar musical forms that develop logically and build through more traditional compositional techniques to a satisfying climax.',
+    description: 'Loves well-structured, familiar musical forms that develop logically. They appreciate how traditional compositional techniques are used to build momentum toward a satisfying musical climax.',
   },
   MCDI: {
-    name: 'The Pocket Analyst',
-    description: 'Enjoys breaking down the theory and interplay of a steady, reliable groove or complex but repeating musical pattern.',
+    name: 'The Analyst',
+    description: 'Enjoys breaking down the theory and interplay of a steady, reliable groove or complex but familiar musical pattern.',
   },
   MCDP: {
-    name: 'The Virtuoso Tracker',
-    description: 'Likes standard musical structures but focuses their attention on the technical brilliance of individual performances or the highly specific development of a motif over time.',
+    name: 'The Virtuoso',
+    description: 'Likes more standard musical structures that move forward, but focuses their attention heavily on the technical brilliance of individual performances or the highly specific development of a localized motif over time.',
   },
   MSHI: {
-    name: 'The Avant-Garde Meditator',
-    description: 'Appreciates complex, unconventional musical structures designed to create a challenging environment. They evaluate the overarching theoretical framework of experimental pieces.',
+    name: 'The Abstract Surveyor',
+    description: 'Appreciates highly unconventional, unpredictable musical environments. They immerse themselves in abstract or dissonant soundscapes, evaluating the overarching theoretical framework and structural rules governing the chaos.',
   },
   MSHP: {
     name: 'The Prog Architect',
-    description: 'Demands complex, highly unconventional compositions that push musical boundaries while constantly developing through unpredictable structural and rhythmic phases.',
+    description: 'Demands complex, highly unconventional compositions that push musical boundaries while constantly driving forward through unpredictable structural and rhythmic phases.',
   },
   MSDI: {
     name: 'The Deconstructor',
-    description: 'Fascinated by highly technical, unpredictable micro-interactions, complex time signatures, and details within a relatively static overarching form.',
+    description: 'Fascinated by highly technical, unpredictable micro-interactions, complex time signatures, and intricate voicing details within a more static and overarching form.',
   },
   MSDP: {
     name: 'The Jazz Maverick',
-    description: 'Thrives on technical complexity and sudden structural shifts, focusing intensely on brilliant, unpredictable localized interplay between instruments as the piece rapidly evolves.',
+    description: 'Thrives on technical complexity and sudden structural shifts. They focus intensely on brilliant, unpredictable localized interplay between instruments and love structured songs that continuously change for a purpose.',
   }
 };
 

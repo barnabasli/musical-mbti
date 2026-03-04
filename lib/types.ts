@@ -71,6 +71,12 @@ interface BaseQuestion {
   audioLabel2?: string;
   /** Optional album/cover art path (relative to /public), shown alongside the audio player. */
   coverSrc?: string;
+  /** Optional cinematic background video path (relative to /public) for immersive questions. */
+  cinematicVideoSrc?: string;
+  /** Optional cinematic background image path (relative to /public) — animated with Ken Burns effect. */
+  cinematicImageSrc?: string;
+  /** Override blur for the cinematic background in paused/playing states. */
+  cinematicBlur?: { paused: string; playing: string };
 }
 
 /**

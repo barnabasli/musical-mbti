@@ -149,7 +149,7 @@ export function LandingView({ onStart }: LandingViewProps) {
         className="relative z-10 px-8 py-6 sm:px-12"
       >
         <p className="text-[10px] uppercase tracking-[0.25em] text-neutral-300">
-          ~3 minutes
+          ~5 minutes
         </p>
       </motion.footer>
     </motion.div>

@@ -8,22 +8,28 @@ import { QuizView }     from '@/components/QuizView';
 import { ResultsView }  from '@/components/ResultsView';
 
 import { questions }                                     from '@/lib/questions';
-import { initialScores, applyScores, calculateAxisBounds } from '@/lib/scoring';
-import { AppView, ScoreAdjustment, Scores }              from '@/lib/types';
+import { initialScores, applyScores, computePerQuestionBounds, calculateBoundsFromHistory } from '@/lib/scoring';
+import { AppView, ScoreAdjustment, Scores }                                                  from '@/lib/types';
 
 export default function Home() {
   const [view, setView]                 = useState<AppView>('landing');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [scores, setScores]             = useState<Scores>(initialScores);
+  const [answerHistory, setAnswerHistory] = useState<ScoreAdjustment[][]>([]);
 
-  // Calculate the max/min possible scores across all questions once
-  const bounds = useMemo(() => calculateAxisBounds(questions), []);
+  // Pre-compute per-question bounds once; aggregate dynamically from answer history
+  const perQuestionBounds = useMemo(() => computePerQuestionBounds(questions), []);
+  const bounds = useMemo(
+    () => calculateBoundsFromHistory(perQuestionBounds, answerHistory),
+    [perQuestionBounds, answerHistory],
+  );
 
   // ── Handlers ───────────────────────────────────────────────────────────────
 
   const handleStart = useCallback(() => {
     setCurrentIndex(0);
     setScores(initialScores);
+    setAnswerHistory([]);
     setView('quiz');
   }, []);
 
@@ -36,6 +42,7 @@ export default function Home() {
     (adjustments: ScoreAdjustment[]) => {
       const newScores = applyScores(scores, adjustments);
       setScores(newScores);
+      setAnswerHistory((prev) => [...prev, adjustments]);
 
       if (currentIndex + 1 >= questions.length) {
         setView('results');
