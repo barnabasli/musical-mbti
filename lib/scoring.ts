@@ -44,7 +44,12 @@ const addScores = (a: Scores, b: Scores): Scores => ({
 function questionOutcomes(q: any): Scores[] {
   let outcomes: Scores[] = [emptyScores()];
 
-  if (q.answers && !q.answers.some((a: any) => a.secondAnswers)) {
+  if (q.format === 'multiselect' && q.options) {
+    // Each option is independently selectable — treat each as its own potential outcome.
+    // (Bounds represent the extreme of any single option, which is sufficient when
+    // each option affects a distinct axis.)
+    outcomes = q.options.map((o: any) => applyScores(emptyScores(), o.scores || []));
+  } else if (q.answers && !q.answers.some((a: any) => a.secondAnswers)) {
     outcomes = q.answers.map((a: any) => applyScores(emptyScores(), a.scores || []));
   } else if (q.answers && q.answers.some((a: any) => a.secondAnswers)) {
     outcomes = [];
@@ -230,7 +235,7 @@ interface Archetype {
 const ARCHETYPES: Partial<Record<string, Archetype>> = {
   VCHI: {
     name: 'The Average Joe',
-    description: 'Has many comfort playlists they will listen to for hours on end. They tend to be emotionally affected by music and love immersing themselves in their favorite songs.',
+    description: 'Has many comfort playlists they will listen to for hours on end. You tend to be emotionally affected by music and love immersing yourself in your favorite songs.',
   },
   VCHP: {
     name: 'The Healing Era Girl',
@@ -286,7 +291,7 @@ const ARCHETYPES: Partial<Record<string, Archetype>> = {
   },
   MSDI: {
     name: 'The Hyperfixator',
-    description: 'Fascinated by technical, unpredictable micro-interactions, complexity, and intricate details within a song. You like music that constantly occupies your brain with something you find interesting, whatever that may be. You can likely loop a song you find appealing for hours without getting bored of it.',
+    description: 'Fascinated by technical, unpredictable micro-interactions, complexity, and intricate details within a song. You like music that constantly occupies your brain with something you find interesting, whatever that may be. You can likely loop a song you find appealing for hours without getting bored of it, and care deeply about songs being different.',
   },
   MSDP: {
     name: 'The Aesthetic Snob',

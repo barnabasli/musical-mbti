@@ -118,42 +118,46 @@ export const questions: Question[] = [
     ],
   },
 
-  // ── Q14 — Playlist ──────────────────────────────────────────────
-  // Tests: Scope, Vibes, Musicality
+    // ── Q35 — The Album ──────────────────────────────────────────────────────────
+  // Tests: Scope, Momentum, Entropy, Motivation (multi-axis, multi-select)
   {
-    id: 14,
-    scenario: 'Playlist',
-    questionText: 'Imagine you\'re building a playlist. Which option best describes how you decide what songs go into that playlist?',
-    answers: [
+    id: 35,
+    scenario: 'The Album',
+    format: 'multiselect' as const,
+    maxSelect: 3,
+    hideLabels: true,
+    questionText: 'Select the answer choices that occur MOST often in your favorite albums.',
+    options: [
       {
         label: 'A',
-        text: 'My playlists tell a story; the order of my songs matters a lot',
-        scores: [
-          { axis: 'scope', points: 2 }, // strong Holistic
-          { axis: 'momentum',   points: -2 }, // strong Progression
-        ],
+        text: 'The album means something to the artist and/or tells a story',
+        scores: [{ axis: 'scope', points: 2 }], // strong Holistic
       },
       {
         label: 'B',
-        text: 'I make playlists based off how the songs make me feel',
-        scores: [
-          { axis: 'motivation', points: 2 }, // strong Vibes
-        ],
+        text: 'The album has an overarching ambience or theme',
+        scores: [{ axis: 'momentum', points: 2 }], // strong Immersion
       },
       {
         label: 'C',
-        text: 'I categorize songs based off their genre or quality',
-        scores: [
-          { axis: 'motivation', points: -2 }, // strong Musicality
-        ],
+        text: 'The production is high quality and is full of hidden layers and details',
+        scores: [{ axis: 'scope', points: -2 }], // strong Detailed
       },
       {
         label: 'D',
-        text: 'I make playlists for specific activities or situations, like workouts, parties, or road trips',
-        scores: [
-          { axis: 'momentum', points: 1 }, // mild Immersion (consistent groove for the activity)
-        ],
-      }
+        text: "The album is creative and doesn't sound like what I'm used to hearing",
+        scores: [{ axis: 'entropy', points: -2 }], // strong Surprise
+      },
+      {
+        label: 'E',
+        text: 'The album is really pleasant to listen to and helps me relax',
+        scores: [{ axis: 'entropy', points: 2 }], // strong Comfort
+      },
+      {
+        label: 'F',
+        text: 'The musical ideas in the album are brilliant',
+        scores: [{ axis: 'motivation', points: -2 }], // strong Musicality
+      },
     ],
   },
 
@@ -172,7 +176,6 @@ export const questions: Question[] = [
         label: 'A',
         text: 'Medtner, Rachmaninoff, Beethoven',
         scores: [
-          { axis: 'motivation', points: -1 }, // mild Musicality
           { axis: 'entropy',    points: -2 }, // strong Surprise
           { axis: 'scope',      points: -1 }, // mild Detailed
         ],
@@ -181,7 +184,6 @@ export const questions: Question[] = [
         label: 'B',
         text: 'Mozart, Chopin, Mahler',
         scores: [
-          { axis: 'motivation', points: -1 }, // mild Musicality
           { axis: 'entropy', points: 2 }, // strong Comfort
           { axis: 'scope',   points: 2 }, // strong Holistic
         ],
@@ -347,6 +349,40 @@ export const questions: Question[] = [
     ],
   },
 
+  // ── Q50 — The Old Favorite ───────────────────────────────────────────────────
+  // Separates spatial immersion, structural appreciation, and emotional anchoring.
+  {
+    id: 50,
+    scenario: 'The Old Favorite',
+    questionText: 'Which option best describes why you listen to your favorite song?',
+    answers: [
+      {
+        label: 'A',
+        text: 'It\'s a beautiful song that\'s really satisfying to my ear',
+        scores: [{ axis: 'motivation', points: -2 }], // strong Musicality
+      },
+      {
+        label: 'B',
+        text: 'It\'s just been ingrained in my life and feels like a familiar anchor',
+        scores: [{ axis: 'entropy', points: 2 }], // strong Comfort
+      },
+      {
+        label: 'C',
+        text: 'There\'s so many little details about it that I find interesting',
+        scores: [
+            { axis: 'scope',   points: -2 }, // strong Detailed
+          ],
+      },
+      {
+        label: 'D',
+        text: 'It does what it tries to do extremely well',
+        scores: [
+            { axis: 'scope',   points: 3 }, // very strong Holistic
+          ],
+      },
+    ],
+  },
+
   {
     id: 27,
     scenario: 'The Masterpiece',
@@ -497,7 +533,7 @@ export const questions: Question[] = [
           {
             label: 'B',
             text: 'His lyrics, the writing and storytelling',
-            scores: [{ axis: 'motivation', points: 1 }, // mild Vibes
+            scores: [{ axis: 'motivation', points: 2 }, // strong Vibes
                     { axis: 'momentum',   points: 1 }, // mild Immersion
             ], 
           },
@@ -523,7 +559,7 @@ export const questions: Question[] = [
           {
             label: 'B',
             text: 'His lyrics, the writing and storytelling',
-            scores: [{ axis: 'motivation', points: 1 }, // mild Vibes
+            scores: [{ axis: 'motivation', points: 2 }, // strong Vibes
               { axis: 'momentum',   points: 1 }, // mild Immersion
             ], 
           },
@@ -541,6 +577,27 @@ export const questions: Question[] = [
         label: '–',
         text: "I don't know these artists",
         scores: [],
+      },
+    ],
+  },
+
+  // ── Q49 — The Grand Finale ───────────────────────────────────────────────────
+  // Tests: Holistic vs. Musicality
+  // Separates the spatial/macro perception of music from the intuitive ear for musical resolution.
+  {
+    id: 49,
+    scenario: 'The Grand Finale',
+    questionText: 'A grand and majestic song is coming to its end. As the final moments play out, what leaves you feeling the most satisfied?',
+    answers: [
+      {
+        label: 'A',
+        text: 'A resolution that works musically',
+        scores: [{ axis: 'motivation', points: -2 }], // strong Musicality
+      },
+      {
+        label: 'B',
+        text: 'A way of closure that fits the theme of the song',
+        scores: [{ axis: 'scope', points: 2 }], // strong Holistic
       },
     ],
   },

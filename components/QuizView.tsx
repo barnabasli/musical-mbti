@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { AnswerOption, BinaryQuestion, LikertOption, LikertQuestion, LikertScale, Question, ScoreAdjustment } from '@/lib/types';
+import { AnswerOption, BinaryQuestion, LikertOption, LikertQuestion, LikertScale, MultiselectQuestion, Question, ScoreAdjustment } from '@/lib/types';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -213,8 +213,10 @@ export function QuizView({ question, questionIndex, totalQuestions, onAnswer }: 
                   >
                     {question.format === 'likert' ? (
                       <LikertScaleGroup question={question} onAnswer={handleAnswer} cinematic={isCinematic} />
+                    ) : question.format === 'multiselect' ? (
+                      <MultiSelectGroup question={question as MultiselectQuestion} onAnswer={handleAnswer} cinematic={isCinematic} />
                     ) : (
-                      <MultiChoiceGroup question={question} onAnswer={handleAnswer} cinematic={isCinematic} />
+                      <MultiChoiceGroup question={question as BinaryQuestion} onAnswer={handleAnswer} cinematic={isCinematic} />
                     )}
                   </motion.div>
 
@@ -751,6 +753,120 @@ function MultiChoiceGroup({
         {activeContent}
       </motion.div>
     </AnimatePresence>
+  );
+}
+
+// ── Multi-select group ────────────────────────────────────────────────────────
+
+function MultiSelectGroup({
+  question,
+  onAnswer,
+  cinematic,
+}: {
+  question: MultiselectQuestion;
+  onAnswer: (scores: ScoreAdjustment[], info: AnswerInfo) => void;
+  cinematic?: boolean;
+}) {
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const max = question.maxSelect ?? Infinity;
+
+  function toggle(label: string) {
+    setSelected(prev => {
+      const next = new Set(prev);
+      if (next.has(label)) {
+        next.delete(label);
+      } else if (next.size < max) {
+        next.add(label);
+      }
+      return next;
+    });
+  }
+
+  function submit() {
+    const chosen = question.options.filter(o => selected.has(o.label));
+    const allScores = chosen.flatMap(o => o.scores);
+    const label = Array.from(selected).sort().join(',');
+    const text = chosen.map(o => o.text).join(' / ');
+    onAnswer(allScores, { label, text });
+  }
+
+  const atMax = selected.size >= max;
+
+  return (
+    <div>
+      {question.maxSelect && (
+        <p className={`mb-5 text-xs font-light ${cinematic ? 'text-white/40' : 'text-neutral-400'}`}>
+          Select up to {question.maxSelect}
+        </p>
+      )}
+      {question.options.map((opt, i) => {
+        const isSelected = selected.has(opt.label);
+        const isDisabled = !isSelected && atMax;
+        return (
+          <motion.button
+            key={opt.label}
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.07 + 0.12 }}
+            onClick={() => toggle(opt.label)}
+            disabled={isDisabled}
+            className={`group flex w-full items-center gap-4 border-t py-4 text-left transition-colors duration-200 ${
+              i === question.options.length - 1 ? 'border-b' : ''
+            } ${cinematic ? 'border-white/15' : 'border-neutral-200'} ${isDisabled ? 'opacity-30' : ''}`}
+          >
+            {/* Checkbox */}
+            <span
+              className={`shrink-0 flex h-4 w-4 items-center justify-center rounded border transition-all duration-150 ${
+                isSelected
+                  ? cinematic ? 'border-white bg-white' : 'border-neutral-900 bg-neutral-900'
+                  : cinematic ? 'border-white/30' : 'border-neutral-300'
+              }`}
+            >
+              {isSelected && (
+                <svg width="8" height="6" viewBox="0 0 8 6" fill="none">
+                  <path d="M1 3L3 5L7 1" stroke={cinematic ? '#111' : '#fff'} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              )}
+            </span>
+
+            {/* Label badge */}
+            {!question.hideLabels && (
+              <span className={`shrink-0 text-[10px] font-medium uppercase tracking-[0.2em] transition-colors duration-200 ${
+                cinematic
+                  ? isSelected ? 'text-white/60' : 'text-white/30'
+                  : isSelected ? 'text-neutral-500' : 'text-neutral-300'
+              }`}>
+                {opt.label}
+              </span>
+            )}
+
+            {/* Text */}
+            <span className={`flex-1 text-[15px] font-light leading-relaxed transition-colors duration-200 ${
+              cinematic
+                ? isSelected ? 'text-white' : 'text-white/70'
+                : isSelected ? 'text-neutral-900' : 'text-neutral-600'
+            }`}>
+              {opt.text}
+            </span>
+          </motion.button>
+        );
+      })}
+
+      {/* Submit — always rendered to avoid layout shift; fades in on first selection */}
+      <div className="mt-7 flex justify-center">
+        <motion.button
+          animate={{ opacity: selected.size > 0 ? 1 : 0 }}
+          transition={{ duration: 0.2 }}
+          onClick={submit}
+          style={{ pointerEvents: selected.size > 0 ? 'auto' : 'none' }}
+          className={`group flex items-center gap-2 border-b pb-0.5 text-sm font-medium transition-opacity hover:opacity-50 ${
+            cinematic ? 'border-white text-white' : 'border-neutral-900 text-neutral-900'
+          }`}
+        >
+          Continue <span className="inline-block transition-transform duration-300 group-hover:translate-x-1">→</span>
+        </motion.button>
+      </div>
+    </div>
   );
 }
 

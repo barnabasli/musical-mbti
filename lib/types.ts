@@ -115,7 +115,17 @@ export interface LikertQuestion extends BaseQuestion {
   secondScale?: LikertScale;
 }
 
-export type Question = BinaryQuestion | LikertQuestion;
+/** Multi-select question — user picks 1–maxSelect options; all selected scores are combined. */
+export interface MultiselectQuestion extends BaseQuestion {
+  format: 'multiselect';
+  options: AnswerOption[];
+  /** Maximum number of options the user may select before submitting (default: unlimited). */
+  maxSelect?: number;
+  /** When true, the A/B/C… label badges are hidden visually (labels still drive selection logic). */
+  hideLabels?: boolean;
+}
+
+export type Question = BinaryQuestion | LikertQuestion | MultiselectQuestion;
 
 // ─── Result Model ─────────────────────────────────────────────────────────────
 
