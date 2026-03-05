@@ -66,7 +66,7 @@ export const questions: Question[] = [
       },
       {
         label: 'C',
-        text: 'The song arrangement and how it\'s put together',
+        text: 'The production, song arrangement, and how it\'s put together',
         scores: [
           { axis: 'scope', points: -2 }, // strong Detailed
         ], 
@@ -203,7 +203,7 @@ export const questions: Question[] = [
     answers: [
       {
         label: 'A',
-        text: 'No, I\'m fine with a song that locks into a groove or atmosphere and stays in it',
+        text: 'No, I\'m fine with a song that locks into a groove and stays in it',
         scores: [
           { axis: 'momentum',   points: 2 }, // strong Immersion
         ],
@@ -241,12 +241,12 @@ export const questions: Question[] = [
     answers: [
       {
         label: 'A',
-        text: 'Taking in the overarching mood and painting a mental picture of the whole environment',
+        text: 'Taking in the overarching mood and painting a picture of the whole environment',
         scores: [{ axis: 'scope', points: 2 }], // strong Holistic
       },
       {
         label: 'B',
-        text: 'Listening to the melody, a specific instrument or vocalist, or a rhythm that caught your attention',
+        text: 'Listening to the singer, a specific instrument, or a rhythm that caught your attention',
         scores: [{ axis: 'scope', points: -2 }], // strong Detailed
       },
     ],
@@ -350,7 +350,7 @@ export const questions: Question[] = [
   {
     id: 27,
     scenario: 'The Masterpiece',
-    questionText: 'When you declare a song a masterpiece, what is usually the defining reason?',
+    questionText: 'When you declare a song as a masterpiece, what is usually the defining reason?',
     answers: [
       {
         label: 'A',
@@ -634,7 +634,7 @@ export const questions: Question[] = [
   {
     id: 41,
     scenario: 'The Compliment',
-    questionText: 'You are trying to explain to a friend why you like a certain song. Which of these sounds more like something you would say?',
+    questionText: 'You are trying to explain to a friend why you like one of your favorite songs. Which of these sounds more like something you would say?',
     answers: [
       {
         label: 'A',
@@ -643,7 +643,7 @@ export const questions: Question[] = [
       },
       {
         label: 'B',
-        text: 'The song is just beautiful, it\'s really nice to listen to',
+        text: 'The song is really beautiful and it\'s so nice to listen to',
         scores: [{ axis: 'motivation', points: -2 }], // strong Musicality
       },
     ],
