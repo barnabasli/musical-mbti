@@ -287,7 +287,7 @@ export const questions: Question[] = [
     answers: [
       {
         label: 'A',
-        text: 'A random part I found catchy',
+        text: 'A part I found catchy',
         scores: [{ axis: 'entropy', points: 1 }], // mild Comfort
       },
       {
@@ -420,7 +420,7 @@ export const questions: Question[] = [
       {
         label: 'C',
         text: 'How interesting and creative everything is',
-        scores: [{ axis: 'motivation', points: -2 }], // strong Musicality
+        scores: [{ axis: 'motivation', points: -1 }], // weak Musicality
       },
       {
         label: 'D',
@@ -432,7 +432,7 @@ export const questions: Question[] = [
       },
       {
         label: 'E',
-        text: 'How weird it sounds',
+        text: 'How unconventional it sounds',
         scores: [
           { axis: 'entropy', points:  2 }, // strong Comfort
         ],
@@ -569,7 +569,7 @@ export const questions: Question[] = [
     answers: [
       {
         label: 'A',
-        text: 'If the groove is perfect, I could listen to it loop forever without it ever needing to change',
+        text: 'If the groove is perfect, I could listen to it loop for awhile without it needing to change',
         scores: [{ axis: 'momentum', points: 2 }], // strong Immersion
       },
       {
@@ -586,12 +586,12 @@ export const questions: Question[] = [
     answers: [
       {
         label: 'A',
-        text: 'I cycle through a lot of different phases and pick up new artists, genres, or albums to obsess over',
+        text: 'I cycle through a lot of different phases and like to pick up new artists, genres, or albums',
         scores: [{ axis: 'entropy', points: -2 }], // strong Surprise
       },
       {
         label: 'B',
-        text: 'I rely on a core group of artists, albums, or playlists that I’ve trusted and loved for a long time',
+        text: 'I usually rely on a core group of artists, albums, or playlists that I’ve trusted and loved for a long time',
         scores: [{ axis: 'entropy', points: 2 }], // strong Comfort
       },
     ],

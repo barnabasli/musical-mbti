@@ -129,7 +129,7 @@ export function BlogView({ onBack }: BlogViewProps) {
                 >
                   this Spotify playlist
                 </a>
-                {' '}comprised mostly of pop. The creator of this playlist is one of the top competitive programmers in the world; someone objectively brilliant who just happens to enjoy uncomplicated, straightforward music. This is not to bash on pop, but rather to dispel a stereotype often associated with the genre; liking pop doesn&apos;t make you dumb.
+                {' '}comprised mostly of pop. The creator of this playlist is one of the top competitive programmers in the world; someone objectively brilliant who just happens to enjoy uncomplicated, straightforward music. This is not to bash on pop or rap, but rather to dispel a stereotype often associated with the genre; liking pop doesn&apos;t make you dumb.
               </p>
             </div>
 
