@@ -154,7 +154,7 @@ export function QuizView({ question, questionIndex, totalQuestions, onAnswer }: 
           </div>
 
           {/* Question card */}
-          <div className="flex flex-1 items-center justify-center px-8 py-16 sm:px-12">
+          <div className="flex flex-1 items-center justify-center px-8 py-8 sm:px-12 sm:py-16">
             <AnimatePresence mode="wait">
               <motion.div
                 key={question.id}
@@ -170,7 +170,7 @@ export function QuizView({ question, questionIndex, totalQuestions, onAnswer }: 
                   animate={{ opacity: 1 }}
                   exit={{ opacity: isCinematic ? 0 : 1 }}
                   transition={{ duration: 0.38, ease: [0.4, 0, 0.2, 1] }}
-                  className="mb-10 text-[clamp(1.25rem,3vw,1.75rem)] font-light leading-[1.35] tracking-[-0.01em]"
+                  className="mb-6 sm:mb-10 text-[clamp(1.25rem,3vw,1.75rem)] font-light leading-[1.35] tracking-[-0.01em]"
                   style={{ color: isCinematic ? 'rgba(255,255,255,0.95)' : '#171717' }}
                 >
                   {question.questionText}
@@ -181,7 +181,7 @@ export function QuizView({ question, questionIndex, totalQuestions, onAnswer }: 
                   
                   {/* Audio player(s) */}
                   {question.audioSrc && (
-                    <div className="mb-10 flex flex-col gap-4">
+                    <div className="mb-6 sm:mb-10 flex flex-col gap-4">
                       <AudioPlayer
                         src={question.audioSrc}
                         label={question.audioLabel}
@@ -484,7 +484,7 @@ function AudioPlayer({
           step={0.1}
           value={currentTime}
           onChange={seek}
-          className="mb-3 h-px w-full cursor-pointer appearance-none rounded-full bg-neutral-200"
+          className="mb-3 h-1 sm:h-px w-full cursor-pointer appearance-none rounded-full bg-neutral-200"
           style={{ accentColor }}
         />
 
@@ -492,7 +492,7 @@ function AudioPlayer({
           <button
             onClick={togglePlay}
             aria-label={playing ? 'Pause' : 'Play'}
-            className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full transition-all duration-200 hover:scale-105 active:scale-95"
+            className="flex h-10 w-10 sm:h-7 sm:w-7 flex-shrink-0 items-center justify-center rounded-full transition-all duration-200 hover:scale-105 active:scale-95"
             style={{ backgroundColor: `${accentColor}15`, color: accentColor }}
           >
             {playing ? (
@@ -632,8 +632,8 @@ function SingleScale({
               <span
                 className={
                   isSelected
-                    ? `flex h-9 w-9 items-center justify-center rounded-full text-sm font-light transition-all duration-200 ${cinematic ? 'bg-white text-neutral-900' : 'bg-neutral-900 text-white'}`
-                    : `flex h-9 w-9 items-center justify-center rounded-full border text-sm font-light transition-all duration-200 ${cinematic ? 'border-white/30 text-white/50 hover:border-white/70 hover:text-white/90' : 'border-neutral-200 text-neutral-400 hover:border-neutral-400 hover:text-neutral-600'}`
+                    ? `flex h-11 w-11 sm:h-9 sm:w-9 items-center justify-center rounded-full text-sm font-light transition-all duration-200 ${cinematic ? 'bg-white text-neutral-900' : 'bg-neutral-900 text-white'}`
+                    : `flex h-11 w-11 sm:h-9 sm:w-9 items-center justify-center rounded-full border text-sm font-light transition-all duration-200 ${cinematic ? 'border-white/30 text-white/50 hover:border-white/70 hover:text-white/90' : 'border-neutral-200 text-neutral-400 hover:border-neutral-400 hover:text-neutral-600'}`
                 }
               >
                 {opt.value}

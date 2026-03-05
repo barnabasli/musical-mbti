@@ -80,7 +80,7 @@ export function BlogView({ onBack }: BlogViewProps) {
             <div>
               <h3 className="mb-3 text-base font-bold text-[#1A2133]">People With and Without Music Experience</h3>
               <p className="text-base leading-[1.85] text-[#4E5F77]">
-                Bridging the gap between people with and without formal music training is extremely difficult and makes it hard to test certain things, especially the axis of Holistic v Detailed. A listener&apos;s ability to process complex music is heavily linked to their previous musical exposure, as well as certain biological and psychological traits. To account for this, I&apos;ve decided primarily to test this axis through written questions rather than questions involving listening. It&apos;s not fair to expect the same level of attention to detail from an average person compared to someone with a PhD in sound composition.
+                Bridging the gap between people with and without formal music training is extremely difficult and makes it hard to test certain things, especially the axis of Holistic vs. Detailed. A listener&apos;s ability to process complex music is heavily linked to their previous musical exposure, as well as certain biological and psychological traits. To account for this, I&apos;ve decided primarily to test this axis through written questions rather than questions involving listening. It&apos;s not fair to expect the same level of attention to detail from an average person compared to someone with a PhD in sound composition.
               </p>
             </div>
 
@@ -114,7 +114,7 @@ export function BlogView({ onBack }: BlogViewProps) {
                 <h3 className="text-lg font-black text-[#1A2133]">Motivation: Vibes vs. Musicality</h3>
               </div>
               <p className="mb-5 text-base leading-[1.85] text-[#4E5F77]">
-                I would argue this is the most polarizing distinction in how people approach music. This spectrum measures whether you are drawn in by the pure emotion and atmosphere a track gives off, or if you enjoy it because of the underlying framework and musical craft.
+                I would argue this is the most polarizing distinction in how people approach music. This spectrum measures whether you are drawn in by the pure emotion and atmosphere a track gives off, or if you enjoy it because of the underlying framework and musical craft. It is quite hard to separate these two because people have been conditioned to describe their appreciation for musicality as emotion, and therefore anyone without the vocabulary to realize that it is the music they appreciate will typically default towards the vibey or emotional responses. I have tried to combat this but do think there is notable room for improvement here.
               </p>
               <p className="mb-5 text-base leading-[1.85] text-[#4E5F77]">
                 I want to clarify a common misconception here: your placement on this spectrum is NOT an indicator of your natural ability, &ldquo;music IQ,&rdquo; or intelligence. I have a friend who has proven himself to be a very talented musician through competitions, who also happens to have perfect pitch. It&apos;s pretty clear that he has a high &ldquo;music IQ&rdquo;, yet many of his playlists consist entirely of uncomplicated rap music. I&apos;ve asked him about his music taste, and he said he listens purely for the vibes.

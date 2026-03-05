@@ -359,7 +359,7 @@ export const questions: Question[] = [
       },
       {
         label: 'B',
-        text: 'The sheer brilliance of the composition and the beauty of the music itself',
+        text: 'The brilliance of the composition and the beauty of the music itself',
         scores: [{ axis: 'motivation', points: -1 }], // weak Musicality
       },
     ],
@@ -627,6 +627,26 @@ export const questions: Question[] = [
     scores: [{ axis: 'momentum', points: -2 }], // strong Progression
     },
     ],
-    }
+    },
+    // ── Q41 — The Compliment ─────────────────────────────────────────────────────
+  // STRICTLY TESTS: Motivation (Vibes vs. Musicality)
+  // Contrasts atmospheric weight with aesthetic/melodic beauty using everyday language.
+  {
+    id: 41,
+    scenario: 'The Compliment',
+    questionText: 'You are trying to explain to a friend why you like a certain song. Which of these sounds more like something you would say?',
+    answers: [
+      {
+        label: 'A',
+        text: 'It creates this incredible atmosphere and I love the feeling it gives me',
+        scores: [{ axis: 'motivation', points: 2 }], // strong Vibes
+      },
+      {
+        label: 'B',
+        text: 'The song is just beautiful, it\'s really nice to listen to',
+        scores: [{ axis: 'motivation', points: -2 }], // strong Musicality
+      },
+    ],
+  },
 
 ];

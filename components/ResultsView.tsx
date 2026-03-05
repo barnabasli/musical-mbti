@@ -183,7 +183,7 @@ export function ResultsView({ scores, bounds, onRetake, onBlog }: ResultsViewPro
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.6 }}
-          className="flex justify-center gap-3"
+          className="flex flex-wrap justify-center gap-3"
         >
           <button
             onClick={onRetake}
