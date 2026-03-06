@@ -222,7 +222,7 @@ export function ResultsView({ scores, bounds, onRetake, onBlog }: ResultsViewPro
         >
           <p className="mb-1.5 text-xs font-bold text-[#1A2133]">What about the lyrics?</p>
           <p className="text-xs leading-relaxed text-[#6B7D93]">
-            This test is designed to measure how the actual <em>sound</em> of music interacts with you brain. Lyrics introduce a whole new dimension that can&apos;t be captured accurately in a test like this, and so they aren&apos;t a very large factor in determining your result.
+            This test is designed to measure how the actual <em>sound</em> of music interacts with your brain. Lyrics introduce a whole new dimension that can&apos;t be captured accurately in a test like this, and so they aren&apos;t a large factor in determining your result.
           </p>
         </motion.div>
 

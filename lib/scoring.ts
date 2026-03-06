@@ -251,7 +251,7 @@ const ARCHETYPES: Partial<Record<string, Archetype>> = {
   },
   VCDP: {
     name: 'The Nerdy Swiftie',
-    description: 'You connect deeply with the emotional nuances of your favorite tracks. You listen closely to the details and obsess over how a specific lyric or subtle shift carefully builds the emotional narrative from the first verse to the final chorus. You love music that sounds familiar to you.',
+    description: 'You connect deeply with the emotional nuances of your favorite tracks. You listen closely to the details and are able to tell how a specific lyric or subtle shift carefully builds the emotional narrative from the first verse to the final chorus. You love music that sounds familiar to you.',
     genres: ['Indie Folk', 'Chamber Pop', 'Art Rock', 'Alternative Country', 'Folk Pop'],
   },
   VSHI: {
@@ -261,12 +261,12 @@ const ARCHETYPES: Partial<Record<string, Archetype>> = {
   },
   VSHP: {
     name: 'The Theater Kid',
-    description: 'Wants a musical experience filled with a lot of emotion. You likely thrive on songs that build its direction toward a grand climax. You\'re open to trying new music and appreciate when it tells a story, and are heavily affected by the mood of each song. Most of your music is likely fast-paced rather than being calm.',
+    description: 'Wants a musical experience filled with a lot of emotion. You likely thrive on songs that build its direction toward a grand climax. You\'re open to trying new music and appreciate when it tells a story, and are heavily affected by the mood of each song. Most of your music is energetic rather than calm.',
     genres: ['Art Pop', 'Glam Rock', 'Baroque Pop', 'Psychedelic Pop', 'Musicals'],
   },
   VSDI: {
     name: 'The Bedroom Philosopher',
-    description: 'Loves music that immerses you in its bizarre emotional atmospheres. You pay attention to little moments in each song and are open to trying new genres. You probably listen to a lot of music and curate your playlists carefully, heavily considering the mood of each song and its overall aesthetic.',
+    description: 'Loves music that immerses you in its emotional atmosphere. You pay a lot of attention to detail and notice little moments in each song, and are open to trying new genres. You probably listen to a lot of music and curate your playlists carefully, heavily considering the mood of each song and its overall aesthetic.',
     genres: ['Experimental Pop', 'Indie Electronic', 'Art Rock', 'Shoegaze', 'Alternative Hip Hop'],
   },
   VSDP: {
@@ -276,12 +276,12 @@ const ARCHETYPES: Partial<Record<string, Archetype>> = {
   },
   MCHI: {
     name: 'The Retired Conductor',
-    description: 'You view music structurally and love pieces meant to be experienced as a complete, cohesive whole. You find deep satisfaction in resting within a perfectly balanced composition. You take a bird\'s-eye view of the music and appreciate its grand design and overarching atmosphere.',
+    description: 'You have a good sense of structure for music and love songs and albums meant to be experienced as a complete, cohesive whole. You find deep satisfaction in resting within a perfectly balanced composition. You take a bird\'s-eye view of the music and appreciate its grand design and overarching atmosphere.',
     genres: ['Acoustic', 'Classical', 'New Age', 'Classic Rock', 'Cinematic'],
   },
   MCHP: {
     name: 'The Hans Zimmer Fanboy',
-    description: 'Loves structured musical forms that develop logically and have an emotional payoff at the end. You appreciate songs following familiar patterns and enjoy music that builds momentum toward a satisfying climax. You are likely a safe bet for music recs among your friend group.',
+    description: 'Loves structured musical forms that develop logically and have an emotional payoff at the end. You appreciate songs following familiar patterns and enjoy music that builds momentum toward a satisfying climax. You are likely a safe bet for music recs among your friends.',
     genres: ['Classic Rock', 'Symphonic', 'EDM', 'Classical', 'Metal'],
   },
   MCDI: {
