@@ -8,6 +8,8 @@ export const supabase = createClient(supabaseUrl, supabaseKey);
 export interface QuizAnswer {
   questionId: number;
   scenario: string;
+  questionText: string;
+  choices: string[];
   label: string;
   text: string;
 }

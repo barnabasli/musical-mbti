@@ -13,6 +13,10 @@ interface ResultsViewProps {
   onBlog: () => void;
 }
 
+// ── Genre pill colours (distinct from axis colours) ───────────────────────────
+
+const GENRE_COLORS = ['#C96B8A', '#D4785E', '#3AABA4', '#7A9E4A', '#6B6EC9'];
+
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export function ResultsView({ scores, bounds, onRetake, onBlog }: ResultsViewProps) {
@@ -178,18 +182,62 @@ export function ResultsView({ scores, bounds, onRetake, onBlog }: ResultsViewPro
           </div>
         </motion.div>
 
+        {/* ── Genre recommendations ─────────────────────────────────── */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.5 }}
+          className="mb-8"
+        >
+          <p className="mb-3 text-center text-xs text-[#A0AFBF]">
+            Does this sound like you? If so, give these genres a try!
+          </p>
+          <div className="flex flex-wrap justify-center gap-2">
+            {archetype.genres.map((genre, i) => {
+              const color = GENRE_COLORS[i % GENRE_COLORS.length];
+              return (
+                <span
+                  key={genre}
+                  className="rounded-full px-3.5 py-1 text-xs font-medium"
+                  style={{
+                    backgroundColor: `${color}18`,
+                    color,
+                    border: `1.5px solid ${color}40`,
+                  }}
+                >
+                  {genre}
+                </span>
+              );
+            })}
+          </div>
+        </motion.div>
+
+        {/* ── FAQ ───────────────────────────────────────────────────────── */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.65 }}
+          className="mb-8 rounded-2xl border border-[#E2E8EF] bg-white px-5 py-4"
+          style={{ boxShadow: '0 1px 4px rgba(0,0,0,0.04)' }}
+        >
+          <p className="mb-1.5 text-xs font-bold text-[#1A2133]">What about the lyrics?</p>
+          <p className="text-xs leading-relaxed text-[#6B7D93]">
+            This test is designed to measure how the actual <em>sound</em> of music interacts with you brain. Lyrics introduce a whole new dimension that can&apos;t be captured accurately in a test like this, and so they aren&apos;t a very large factor in determining your result.
+          </p>
+        </motion.div>
+
         {/* ── Actions ───────────────────────────────────────────────────── */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.6 }}
+          transition={{ delay: 1.8 }}
           className="flex flex-wrap justify-center gap-3"
         >
           <button
             onClick={onRetake}
             className="rounded-full border border-[#DDE3EC] bg-white px-7 py-2.5 text-sm font-medium text-[#4E5F77] shadow-[0_1px_3px_rgba(0,0,0,0.05)] transition-all duration-200 hover:border-[#C0CBDA] hover:text-[#1A2133] hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)]"
           >
-            ↺ Retake Quiz
+            Home
           </button>
           <button
             onClick={onBlog}

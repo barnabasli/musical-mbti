@@ -230,73 +230,90 @@ export function getAxisResults(scores: Scores, bounds: AxisBounds): AxisResult[]
 interface Archetype {
   name: string;
   description: string;
+  genres: string[];
 }
 
 const ARCHETYPES: Partial<Record<string, Archetype>> = {
   VCHI: {
     name: 'The Average Joe',
-    description: 'Has many comfort playlists they will listen to for hours on end. You tend to be emotionally affected by music and love immersing yourself in your favorite songs.',
+    description: 'Has many comfort playlists that you can listen to for hours on end. You tend to be emotionally affected by music and love immersing yourself in your favorite tracks. You care a lot about the ambience and mood a song instills in you and listen to music primarily for that reason.',
+    genres: ['Indie Pop', 'Contemporary R&B', 'Neo-Soul', 'Alternative Country', 'Classic Rock'],
   },
   VCHP: {
     name: 'The Healing Era Girl',
-    description: 'Wants an emotional experience and appreciates music that guides their feelings toward a resolution. You probably like songs that tell a story and relate deeply to one of your favorite artists.',
+    description: 'Wants an emotional and atmospheric experience, and appreciates music that guides your feelings toward a resolution. You probably like songs that mean something or tell a story, and relate deeply to one of your favorite artists. A lot of your playlists are categorized by a mood or occasion.',
+    genres: ['Chamber Pop', 'Indie Folk', 'Singer-Songwriter', 'Soft Rock', 'Acoustic'],
   },
   VCDI: {
     name: 'The Failed Guitar Player',
-    description: 'Loves locking into a vibey, comfortable space. However, you don\'t just exist in this space and are are instead drawn to sections of songs you may find interesting. You\'re love immersing yourself in little details of songs you enjoy.',
+    description: 'Loves locking into a vibey, comfortable space. However, you don\'t just exist in this space and are instead drawn to sections of songs you may find interesting. You love immersing yourself in little details of songs you enjoy and you\'re probably the person your friends go to for music recs.',
+    genres: ['Dream Pop', 'Lo-fi Hip Hop', 'Indie Rock', 'Smooth Jazz', 'Shoegaze'],
   },
   VCDP: {
     name: 'The Nerdy Swiftie',
-    description: 'You connect deeply with the emotional nuances of your favorite tracks. You listen closely to the details and obsess over how a specific lyric or subtle shift carefully builds the emotional narrative from the first verse to the final chorus.',
+    description: 'You connect deeply with the emotional nuances of your favorite tracks. You listen closely to the details and obsess over how a specific lyric or subtle shift carefully builds the emotional narrative from the first verse to the final chorus. You love music that sounds familiar to you.',
+    genres: ['Indie Folk', 'Chamber Pop', 'Art Rock', 'Alternative Country', 'Folk Pop'],
   },
   VSHI: {
     name: 'The Alt Middle Schooler',
-    description: 'Seeks an intense emotional atmosphere to immerse themselves in. You enjoy lingering in unconventional, dissonant, and bizarre overarching moods without needing the song to go anywhere, and care a lot about the overall feeling that a song instills in you.',
+    description: 'Seeks an intense emotional atmosphere to immerse themselves in. You enjoy lingering in unconventional, dissonant, and bizarre overarching moods without needing the song to go anywhere, and care a lot about the overall feeling that a song instills in you. You probably listen to music that\'s weird, but not too weird.',
+    genres: ['Indie/Alternative Rock', 'Shoegaze', 'Dream Pop', 'Emo Pop', 'Post Metalcore'],
   },
   VSHP: {
     name: 'The Theater Kid',
-    description: 'Wants a shocking emotional experience with a lot of drama. You likely thrive on songs that build its emotional direction toward a grand climax and love listening to musicals. You\'re open to trying new music and appreciate when it tells a story.',
+    description: 'Wants a musical experience filled with a lot of emotion. You likely thrive on songs that build its direction toward a grand climax. You\'re open to trying new music and appreciate when it tells a story, and are heavily affected by the mood of each song. Most of your music is likely fast-paced rather than being calm.',
+    genres: ['Art Pop', 'Glam Rock', 'Baroque Pop', 'Psychedelic Pop', 'Musicals'],
   },
   VSDI: {
     name: 'The Bedroom Philosopher',
-    description: 'Loves music that immerses you in its bizzare emotional atmospheres. You pay attention to little moments in each song and are open to trying new genres. You probably listen to a lot of music and curate your playlist carefully.',
+    description: 'Loves music that immerses you in its bizarre emotional atmospheres. You pay attention to little moments in each song and are open to trying new genres. You probably listen to a lot of music and curate your playlists carefully, heavily considering the mood of each song and its overall aesthetic.',
+    genres: ['Experimental Pop', 'Indie Electronic', 'Art Rock', 'Shoegaze', 'Alternative Hip Hop'],
   },
   VSDP: {
     name: 'The Unemployed Artist',
-    description: 'Craves music that takes them on a journey, fueled by brilliant moments of disruption as the track evolves. You appreciate originality in music and like songs that are different for the sake of being different.',
+    description: 'Loves music that builds up and takes you on a journey, fueled by occasional moments of disruption as the track evolves. You appreciate originality in music and like songs that are different for the sake of being different. You have a discerning ear and can separate out the layers of songs.',
+    genres: ['Neo-Soul', 'Latin Rock', 'Indie Folk', 'Alternative R&B', 'Experimental Rock'],
   },
   MCHI: {
     name: 'The Retired Conductor',
     description: 'You view music structurally and love pieces meant to be experienced as a complete, cohesive whole. You find deep satisfaction in resting within a perfectly balanced composition. You take a bird\'s-eye view of the music and appreciate its grand design and overarching atmosphere.',
+    genres: ['Acoustic', 'Classical', 'New Age', 'Classic Rock', 'Cinematic'],
   },
   MCHP: {
     name: 'The Hans Zimmer Fanboy',
-    description: 'Loves structured musical forms that develop logically and have an emotional payoff at the end. You appreciate songs following traditional music theory and enjoy songs that build momentum toward a satisfying musical climax.',
+    description: 'Loves structured musical forms that develop logically and have an emotional payoff at the end. You appreciate songs following familiar patterns and enjoy music that builds momentum toward a satisfying climax. You are likely a safe bet for music recs among your friend group.',
+    genres: ['Classic Rock', 'Symphonic', 'EDM', 'Classical', 'Metal'],
   },
   MCDI: {
     name: 'The Casual Musician',
-    description: 'You appreciate the deep mechanics of a well-crafted composition. You find immense satisfaction in locking into a steady, reliable piece that\'s still interesting, and are able to immerse your brain into the little details that make up your favorite songs.',
+    description: 'You appreciate the mechanics of a well-crafted composition. You enjoy in locking into a steady, reliable piece that you find interesting, and are able to immerse your brain into the little details that make up your favorite songs. You have probably played an instrument at some point and have a good ear.',
+    genres: ['Blues', 'Classical', 'Bossa Nova', 'Pop', 'Soul Jazz'],
   },
   MCDP: {
     name: 'The Unsufferable Virtuoso',
-    description: 'Likes music that follows the rules, but is still creative and sophisticated enough that it satisfies your brain. You appreciate music that moves forward and likely have an analytical ear. You focus your attention on the technical brilliance of individual sections or the specific development of localized motifs.',
+    description: 'Enjoys music that follows the rules, but is still sophisticated enough that it satisfies your brain. You appreciate songs that move forward and likely have an analytical ear. You naturally focus your attention on the technical brilliance of individual sections or the specific development of localized motifs.',
+    genres: ['Jazz Fusion', 'Classical', 'Classic Rock', 'Romantic Era', 'Progressive Metal'],
   },
   MSHI: {
     name: 'The "It\'s Actually Art" Guy',
-    description: 'Appreciates highly unconventional, unpredictable musical environments. You like to immerse yourself in abstract or dissonant soundscapes and care about the overarching frameworks and structure governing each song.',
+    description: 'Appreciates highly unconventional, unpredictable, and creative musical environments. You like to immerse yourself in abstract and dissonant soundscapes and care about the overarching frameworks and structure governing each song. You probably listen to a lot of music that most people have never heard of.',
+    genres: ['Free Jazz', 'Math Rock', 'Modernism', 'Impressionist Era', 'EDM'],
   },
   MSHP: {
     name: 'The Elitist',
-    description: 'Demands complex and unconventional compositions that push musical boundaries while constantly driving forward through unpredictable structural and rhythmic phases. You love experimentalist music but require it to make sense somehow or move somewhere.',
+    description: 'Demands complex and unconventional compositions that push musical boundaries while constantly driving forward throughout creative structural and rhythmic phases. You love experimentalist music but require it to make sense as a whole, and care deeply about the big picture. Your friends have probably never heard of 99% songs you listen to.',
+    genres: ['Post Rock', 'Progressive Metal', 'Experimental Jazz', 'Impressionist Era', 'Free Jazz'],
   },
   MSDI: {
     name: 'The Hyperfixator',
-    description: 'Fascinated by technical, unpredictable micro-interactions, complexity, and intricate details within a song. You like music that constantly occupies your brain with something you find interesting, whatever that may be. You can likely loop a song you find appealing for hours without getting bored of it, and care deeply about songs being different.',
+    description: 'Fascinated by technical interactions, complexity, and intricate details within a song. You like a variety of music that constantly occupies your brain with something you find interesting, whatever that may be. You probably have a creative mind and a strong musical intuition, and are able to loop a song you find appealing for hours without getting bored of it.',
+    genres: ['Indie/Alternative Rock', 'Jazz Fusion', 'Romantic/Impressionist Era', 'EDM', 'Math Rock'],
   },
   MSDP: {
     name: 'The Aesthetic Snob',
-    description: 'Thrives on technical complexity and sudden structural shifts and loves brilliant, unpredictable localized interplay between instruments. You like songs that are complex but not needlessly complex, as the complexity has to serve a purpose. You value musicality, originality, and beauty in music above all.',
-  }
+    description: 'Thrives on complexity and loves brilliant, unique details as well as interplay between different parts of a song. Although you love sophistication and intricacy, you require it to be justified by an overarching purpose and don\'t enjoy songs that seem needlessly complex. You have a diverse taste in music and value musicality, originality, and beauty above all.',
+    genres: ['Jazz Fusion', 'Contemporary Classical', 'Progressive Rock', 'Romantic/Impressionist Era', 'Metal'],
+  },
 };
 
 export function getArchetype(type: string): Archetype {
@@ -304,6 +321,7 @@ export function getArchetype(type: string): Archetype {
     ARCHETYPES[type] ?? {
       name: 'The Musical Cognitivist',
       description: `Your ${type} profile reflects a uniquely calibrated way of experiencing music — a fingerprint of four axes that defines your listening identity.`,
+      genres: ['Experimental', 'Ambient', 'Art Rock', 'Jazz', 'Contemporary Classical'],
     }
   );
 }

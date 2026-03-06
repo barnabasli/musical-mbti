@@ -101,9 +101,17 @@ export default function Home() {
       setAnswerHistory((prev) => [...prev, adjustments]);
 
       const question = questions[currentIndex];
+      const choices =
+        question.format === 'likert'
+          ? [`1 ← ${question.leftLabel}`, '2', '3', '4', `5 → ${question.rightLabel}`]
+          : question.format === 'multiselect'
+          ? question.options.map((o) => `${o.label}: ${o.text}`)
+          : question.answers.map((a) => `${a.label}: ${a.text}`);
       const record: QuizAnswer = {
         questionId: question.id,
         scenario: question.scenario,
+        questionText: question.questionText,
+        choices,
         label: info.label,
         text: info.text,
       };
