@@ -135,7 +135,7 @@ export const questions: Question[] = [
       },
       {
         label: 'B',
-        text: 'The album has an overarching ambience or theme',
+        text: 'The album has an overarching ambience or theme that I can get lost in',
         scores: [{ axis: 'momentum', points: 2 }], // strong Immersion
       },
       {
@@ -229,8 +229,8 @@ export const questions: Question[] = [
         label: 'D',
         text: 'Yes, I usually want the song to have some kind of purpose or structure',
         scores: [
-          { axis: 'scope',      points: -1 }, // mild Detailed
-          { axis: 'momentum',   points: -2 }, // mild Progression
+          { axis: 'scope',      points: 1 }, // mild Holistic
+          { axis: 'momentum',   points: -2 }, // strong Progression
         ],
       },
     ],
@@ -307,7 +307,7 @@ export const questions: Question[] = [
       {
         label: 'D',
         text: 'The general vibe or atmosphere of the song',
-        scores: [{ axis: 'motivation', points: 2 }], // strong Vibes
+        scores: [{ axis: 'motivation', points: 2 }, { axis: 'scope', points: 1 }], // strong Vibes, mild Holistic
       },
       {
         label: 'E',
@@ -363,7 +363,7 @@ export const questions: Question[] = [
       },
       {
         label: 'B',
-        text: 'It\'s just been ingrained in my life and feels like a familiar anchor',
+        text: 'It\'s been ingrained in my life and feels like a familiar anchor',
         scores: [{ axis: 'entropy', points: 2 }], // strong Comfort
       },
       {
@@ -386,7 +386,7 @@ export const questions: Question[] = [
   {
     id: 27,
     scenario: 'The Masterpiece',
-    questionText: 'When you declare a song as a masterpiece, what is usually the defining reason?',
+    questionText: 'Which of the following best describes why you like your favorite songs?',
     answers: [
       {
         label: 'A',
@@ -413,8 +413,8 @@ export const questions: Question[] = [
     audioLabel: '♫ Allan Holdsworth — Tokyo Dream',
     coverSrc: '/covers/tokyo dream.jpg',
     questionText: 'What are your thoughts on this song?',
-    leftLabel: 'This song is weird',
-    rightLabel: 'This song is cool',
+    leftLabel: 'This song sounds weird',
+    rightLabel: 'This song sounds cool',
     options: [
       { value: 1, scores: [{ axis: 'entropy', points:  2 }] }, // strong Comfort
       { value: 2, scores: [{ axis: 'entropy', points:  1 }] }, // mild Comfort
@@ -626,7 +626,7 @@ export const questions: Question[] = [
     answers: [
       {
         label: 'A',
-        text: 'If the groove is perfect, I could listen to it loop for awhile without it needing to change',
+        text: 'If it sounds good, I could listen to it loop for awhile without it needing to change',
         scores: [{ axis: 'momentum', points: 2 }], // strong Immersion
       },
       {
@@ -705,5 +705,4 @@ export const questions: Question[] = [
       },
     ],
   },
-
 ];
